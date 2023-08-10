@@ -12,8 +12,8 @@ public class ProductsController {
     private final Environment environment;
 
     @PostMapping
-    public String createProduct(){
-        return "HTTP Post Handled";
+    public String createProduct(@RequestBody CreateProductRestModel createProductRestModel){
+        return "HTTP Post Handled : "+ createProductRestModel.getTitle();
     }
 
     @GetMapping
