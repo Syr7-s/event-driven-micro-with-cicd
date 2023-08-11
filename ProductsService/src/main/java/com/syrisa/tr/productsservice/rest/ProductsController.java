@@ -32,7 +32,7 @@ public class ProductsController {
         }catch (Exception e){
             returnValue = e.getLocalizedMessage();
         }
-        return "HTTP Post Handled : "+ createProductRestModel.getTitle();
+        return returnValue;
     }
 
     @GetMapping
