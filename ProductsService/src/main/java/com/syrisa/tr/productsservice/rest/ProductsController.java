@@ -1,8 +1,12 @@
 package com.syrisa.tr.productsservice.rest;
 
+import com.syrisa.tr.productsservice.command.CreateProductCommand;
 import lombok.RequiredArgsConstructor;
+import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/product")
@@ -11,8 +15,23 @@ public class ProductsController {
 
     private final Environment environment;
 
+    private final CommandGateway commandGateway;
+
+
     @PostMapping
     public String createProduct(@RequestBody CreateProductRestModel createProductRestModel){
+        CreateProductCommand createProductCommand = CreateProductCommand.builder()
+                .price(createProductRestModel.getPrice())
+                .productId(UUID.randomUUID().toString())
+                .quantity(createProductRestModel.getQuantity())
+                .title(createProductRestModel.getTitle())
+                .build();
+        String returnValue = "" ;
+        try {
+            returnValue = commandGateway.sendAndWait(createProductCommand);
+        }catch (Exception e){
+            returnValue = e.getLocalizedMessage();
+        }
         return "HTTP Post Handled : "+ createProductRestModel.getTitle();
     }
 
