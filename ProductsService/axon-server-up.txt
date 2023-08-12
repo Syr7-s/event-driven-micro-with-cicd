@@ -1,0 +1,1 @@
+ docker container run --name axonserver -p 8024:8024 -p 8124:8124 -p 8025:8025  -v /Users/isasayar/Desktop/Event-Driven-Microservices/docker/axon-data:/data -v /Users/isasayar/Desktop/Event-Driven-Microservices/docker/eventdata:/eventdata -v /Users/isasayar/Desktop/Event-Driven-Microservices/config:/config  axoniq/axonserver:latest
