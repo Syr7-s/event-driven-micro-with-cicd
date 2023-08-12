@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.syrisa.tr</groupId>
     <artifactId>DiscoveryService</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.1</version>
     <name>DiscoveryService</name>
     <description>DiscoveryService</description>
     <properties>
@@ -67,6 +67,7 @@
                 </configuration>
             </plugin>
         </plugins>
+        <finalName>discovery-service</finalName>
     </build>
 
 </project>
