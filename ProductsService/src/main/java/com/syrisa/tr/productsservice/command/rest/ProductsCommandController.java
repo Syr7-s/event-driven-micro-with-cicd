@@ -4,7 +4,10 @@ import com.syrisa.tr.productsservice.command.CreateProductCommand;
 import lombok.RequiredArgsConstructor;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.core.env.Environment;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.UUID;
@@ -20,17 +23,18 @@ public class ProductsCommandController {
 
 
     @PostMapping
-    public String createProduct(@Valid @RequestBody CreateProductRestModel createProductRestModel){
-        CreateProductCommand createProductCommand = CreateProductCommand.builder()
-                .price(createProductRestModel.getPrice())
-                .productId(UUID.randomUUID().toString())
-                .quantity(createProductRestModel.getQuantity())
-                .title(createProductRestModel.getTitle())
-                .build();
-        String returnValue = "" ;
+    public String createProduct(@Valid @RequestBody CreateProductRestModel createProductRestModel) {
+        String returnValue = "";
         try {
+            CreateProductCommand createProductCommand = CreateProductCommand.builder()
+                    .price(createProductRestModel.getPrice())
+                    .productId(UUID.randomUUID().toString())
+                    .quantity(createProductRestModel.getQuantity())
+                    .title(createProductRestModel.getTitle())
+                    .build();
             returnValue = commandGateway.sendAndWait(createProductCommand);
-        }catch (Exception e){
+            return returnValue;
+        } catch (Exception e) {
             returnValue = e.getLocalizedMessage();
         }
         return returnValue;
