@@ -15,7 +15,9 @@ public class ProductEntity implements Serializable {
     @Id
     @Column(unique = true)
     private String productId;
-    @Column(unique = true)
+   // @Column(unique = true, nullable = false)
+    @Column(unique = false, nullable = false)
+    //NOT NULL UNIQUE
     private String title;
     private Integer quantity;
     private BigDecimal price;

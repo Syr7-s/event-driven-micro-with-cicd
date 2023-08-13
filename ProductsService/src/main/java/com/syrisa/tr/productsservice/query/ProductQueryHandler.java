@@ -16,7 +16,7 @@ public class ProductQueryHandler {
     private final ProductsRepository productsRepository;
 
     @QueryHandler
-    public List<ProductRestModel> findProducts() {
+    public List<ProductRestModel> findProducts(FindProductsQuery findProductsQuery) {
         return productsRepository.findAll().stream().map(product -> {
             ProductRestModel productRestModel = new ProductRestModel();
             BeanUtils.copyProperties(product, productRestModel);
@@ -32,6 +32,7 @@ public class ProductQueryHandler {
             return productRestModel;
         }).collect(Collectors.toList());
         Third Solution
+
         List<ProductRestModel> productRestModels = new ArrayList<>();
 
         List<ProductEntity> products = productsRepository.findAll();
@@ -41,6 +42,7 @@ public class ProductQueryHandler {
             BeanUtils.copyProperties(product, productRestModel);
             productRestModels.add(productRestModel);
         }
-        return productRestModels;*/
+        return productRestModels;
+         */
     }
 }

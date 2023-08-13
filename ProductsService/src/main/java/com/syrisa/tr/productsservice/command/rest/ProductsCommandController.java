@@ -35,18 +35,18 @@ public class ProductsCommandController {
         return returnValue;
     }
 
-    @GetMapping
-    public String getProduct(){
-        return "HTTP Get Handled "+ environment.getProperty("local.server.port");
-    }
-
-    @PutMapping
-    public String updateProduct(){
-        return "HTTP Put Handled";
-    }
-
-    @DeleteMapping
-    public String deleteProduct(){
-        return "HTTP Delete Handled";
-    }
+//    @GetMapping
+//    public String getProduct(){
+//        return "HTTP Get Handled "+ environment.getProperty("local.server.port");
+//    }
+//
+//    @PutMapping
+//    public String updateProduct(){
+//        return "HTTP Put Handled";
+//    }
+//
+//    @DeleteMapping
+//    public String deleteProduct(){
+//        return "HTTP Delete Handled";
+//    }
 }
