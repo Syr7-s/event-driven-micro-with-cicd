@@ -1,4 +1,4 @@
-package com.syrisa.tr.productsservice.rest;
+package com.syrisa.tr.productsservice.command.rest;
 
 import com.syrisa.tr.productsservice.command.CreateProductCommand;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +11,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/v1/product")
 @RequiredArgsConstructor
-public class ProductsController {
+public class ProductsCommandController {
 
     private final Environment environment;
 

@@ -1,4 +1,4 @@
-package com.syrisa.tr.productsservice.rest;
+package com.syrisa.tr.productsservice.command.rest;
 
 import lombok.*;
 
