@@ -1,7 +1,6 @@
 package com.syrisa.tr.productsservice.command.interceptor;
 
 import com.syrisa.tr.productsservice.command.CreateProductCommand;
-import com.syrisa.tr.productsservice.core.data.ProductEntity;
 import com.syrisa.tr.productsservice.core.data.ProductLookupEntity;
 import com.syrisa.tr.productsservice.core.data.ProductLookupRepository;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Nonnull;
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.function.BiFunction;
 
