@@ -1,6 +1,6 @@
 package com.syrisa.tr.productsservice.command.rest;
 
-import lombok.*;
+import lombok.Data;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
