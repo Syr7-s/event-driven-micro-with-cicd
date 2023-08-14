@@ -25,18 +25,19 @@ public class ProductsCommandController {
     @PostMapping
     public String createProduct(@Valid @RequestBody CreateProductRestModel createProductRestModel) {
         String returnValue = "";
-        try {
-            CreateProductCommand createProductCommand = CreateProductCommand.builder()
-                    .price(createProductRestModel.getPrice())
-                    .productId(UUID.randomUUID().toString())
-                    .quantity(createProductRestModel.getQuantity())
-                    .title(createProductRestModel.getTitle())
-                    .build();
+        CreateProductCommand createProductCommand = CreateProductCommand.builder()
+                .price(createProductRestModel.getPrice())
+                .productId(UUID.randomUUID().toString())
+                .quantity(createProductRestModel.getQuantity())
+                .title(createProductRestModel.getTitle())
+                .build();
+        returnValue = commandGateway.sendAndWait(createProductCommand);
+/*        try {
+
             returnValue = commandGateway.sendAndWait(createProductCommand);
-            return returnValue;
         } catch (Exception e) {
             returnValue = e.getLocalizedMessage();
-        }
+        }*/
         return returnValue;
     }
 
