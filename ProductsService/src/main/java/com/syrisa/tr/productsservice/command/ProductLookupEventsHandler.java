@@ -17,8 +17,7 @@ public class ProductLookupEventsHandler {
 
     @EventHandler
     public void on(ProductCreatedEvent event) {
-        ProductLookupEntity productLookupEntity = new ProductLookupEntity();
-        BeanUtils.copyProperties(event, productLookupEntity);
+        ProductLookupEntity productLookupEntity = new ProductLookupEntity(event.getProductId(), event.getTitle());
         productLookupRepository.save(productLookupEntity);
     }
 }
