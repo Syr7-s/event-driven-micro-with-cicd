@@ -4,14 +4,15 @@ import com.syrisa.tr.productsservice.core.data.ProductEntity;
 import com.syrisa.tr.productsservice.core.data.ProductsRepository;
 import com.syrisa.tr.productsservice.core.events.ProductCreatedEvent;
 import lombok.RequiredArgsConstructor;
+import org.axonframework.config.ProcessingGroup;
 import org.axonframework.eventhandling.EventHandler;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
+@ProcessingGroup("product-group")
 @RequiredArgsConstructor
-public class ProjectEventsHandler {
+public class ProductEventsHandler {
 
     private final ProductsRepository productsRepository;
 
