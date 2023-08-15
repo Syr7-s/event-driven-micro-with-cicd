@@ -1,6 +1,7 @@
 package com.syrisa.tr.ordersservice.command.rest;
 
 import com.syrisa.tr.ordersservice.command.CreateOrderCommand;
+import com.syrisa.tr.ordersservice.core.utils.OrderStatus;
 import lombok.RequiredArgsConstructor;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,6 +28,7 @@ public class OrdersCommandController {
                 .quantity(createOrderRestModel.getQuantity())
                 .userId("27b95829-4f3f-4ddf-8983-151ba010e35b")
                 .addressId(createOrderRestModel.getAddressId())
+                .orderStatus(OrderStatus.CREATED)
                 .build();
         returnValue = commandGateway.sendAndWait(createOrderCommand);
         return returnValue;
