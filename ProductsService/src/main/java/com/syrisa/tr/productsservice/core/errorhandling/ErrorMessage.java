@@ -2,12 +2,13 @@ package com.syrisa.tr.productsservice.core.errorhandling;
 
 import lombok.*;
 
-import java.time.LocalDate;
+import java.util.Date;
+
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class ErrorMessage {
-    private LocalDate timestamp;
+    private Date timestamp;
     private String message;
 }
