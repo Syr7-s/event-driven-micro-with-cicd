@@ -1,4 +1,4 @@
-package com.syrisa.tr.ordersservice.core.utils;
+package com.syrisa.tr.ordersservice.core.model;
 
 public enum OrderStatus {
     CREATED,

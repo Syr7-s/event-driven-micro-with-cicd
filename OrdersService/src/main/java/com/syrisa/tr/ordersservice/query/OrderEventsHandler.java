@@ -2,7 +2,9 @@ package com.syrisa.tr.ordersservice.query;
 
 import com.syrisa.tr.ordersservice.core.entity.OrderEntity;
 import com.syrisa.tr.ordersservice.core.entity.OrdersRepository;
+import com.syrisa.tr.ordersservice.core.events.OrderApprovedEvent;
 import com.syrisa.tr.ordersservice.core.events.OrderCreatedEvent;
+import com.syrisa.tr.ordersservice.core.events.OrderRejectedEvent;
 import lombok.RequiredArgsConstructor;
 import org.axonframework.config.ProcessingGroup;
 import org.axonframework.eventhandling.EventHandler;
@@ -36,5 +38,22 @@ public class OrderEventsHandler {
             ex.printStackTrace();
         }
 
+    }
+
+    @EventHandler
+    public void on(OrderApprovedEvent orderApprovedEvent) {
+        OrderEntity orderEntity = ordersRepository.findByOrderId(orderApprovedEvent.getOrderId());
+        if (orderEntity == null) {
+            return;
+        }
+        orderEntity.setOrderStatus(orderApprovedEvent.getOrderStatus());
+        ordersRepository.save(orderEntity);
+    }
+
+    @EventHandler
+    public void on(OrderRejectedEvent orderRejectedEvent) {
+        OrderEntity orderEntity = ordersRepository.findByOrderId(orderRejectedEvent.getOrderId());
+        orderEntity.setOrderStatus(orderRejectedEvent.getOrderStatus());
+        ordersRepository.save(orderEntity);
     }
 }

@@ -19,7 +19,8 @@ public class OrderQueryController {
 
     @GetMapping
     public List<OrderRestModel> getOrders() {
-        return queryGateway.query(new FindOrdersQuery(), ResponseTypes.multipleInstancesOf(OrderRestModel.class)).join();
+        //return queryGateway.query(new FindOrdersQuery(), ResponseTypes.multipleInstancesOf(OrderRestModel.class)).join();
+        return null;
     }
 /*
     @GetMapping("/{orderId}")

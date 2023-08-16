@@ -1,6 +1,6 @@
 package com.syrisa.tr.ordersservice.core.events;
 
-import com.syrisa.tr.ordersservice.core.utils.OrderStatus;
+import com.syrisa.tr.ordersservice.core.model.OrderStatus;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

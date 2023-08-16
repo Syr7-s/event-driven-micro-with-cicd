@@ -1,7 +1,12 @@
 package com.syrisa.tr.ordersservice.command;
 
+import com.syrisa.tr.ordersservice.command.commands.ApproveOrderCommand;
+import com.syrisa.tr.ordersservice.command.commands.CreateOrderCommand;
+import com.syrisa.tr.ordersservice.command.commands.RejectOrderCommand;
+import com.syrisa.tr.ordersservice.core.events.OrderApprovedEvent;
 import com.syrisa.tr.ordersservice.core.events.OrderCreatedEvent;
-import com.syrisa.tr.ordersservice.core.utils.OrderStatus;
+import com.syrisa.tr.ordersservice.core.events.OrderRejectedEvent;
+import com.syrisa.tr.ordersservice.core.model.OrderStatus;
 import lombok.NoArgsConstructor;
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.eventsourcing.EventSourcingHandler;
@@ -55,5 +60,34 @@ public class OrderAggregate {
         this.userId = orderCreatedEvent.getUserId();
         this.addressId = orderCreatedEvent.getAddressId();
         this.orderStatus = orderCreatedEvent.getOrderStatus();
+    }
+
+    @CommandHandler
+    public void handle(ApproveOrderCommand approvedOrderCommand) {
+    	// Create and publish the OrderApprovedEvent
+
+    	OrderApprovedEvent orderApprovedEvent = new OrderApprovedEvent(approvedOrderCommand.getOrderId());
+
+    	AggregateLifecycle.apply(orderApprovedEvent);
+    }
+
+    @EventSourcingHandler
+    public void on(OrderApprovedEvent orderApprovedEvent) {
+    	this.orderStatus = orderApprovedEvent.getOrderStatus();
+    }
+
+    @CommandHandler
+    public void handle(RejectOrderCommand rejectOrderCommand) {
+
+    	OrderRejectedEvent orderRejectedEvent = new OrderRejectedEvent(rejectOrderCommand.getOrderId(),
+    			rejectOrderCommand.getReason());
+
+    	AggregateLifecycle.apply(orderRejectedEvent);
+
+    }
+
+    @EventSourcingHandler
+    public void on(OrderRejectedEvent orderRejectedEvent) {
+    	this.orderStatus = orderRejectedEvent.getOrderStatus();
     }
 }

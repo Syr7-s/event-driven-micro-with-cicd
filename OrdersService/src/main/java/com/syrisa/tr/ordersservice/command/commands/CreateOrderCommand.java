@@ -1,6 +1,6 @@
-package com.syrisa.tr.ordersservice.command;
+package com.syrisa.tr.ordersservice.command.commands;
 
-import com.syrisa.tr.ordersservice.core.utils.OrderStatus;
+import com.syrisa.tr.ordersservice.core.model.OrderStatus;
 import lombok.Builder;
 import lombok.Data;
 import org.axonframework.modelling.command.TargetAggregateIdentifier;
@@ -9,7 +9,8 @@ import org.axonframework.modelling.command.TargetAggregateIdentifier;
 @Data
 public class CreateOrderCommand {
     @TargetAggregateIdentifier
-    private final String orderId;
+    public final String orderId;
+
     private final String userId;
     private final String productId;
     private final int quantity;

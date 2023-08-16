@@ -1,9 +1,14 @@
 package com.syrisa.tr.ordersservice.command.rest;
 
-import com.syrisa.tr.ordersservice.command.CreateOrderCommand;
-import com.syrisa.tr.ordersservice.core.utils.OrderStatus;
+import com.syrisa.tr.ordersservice.command.commands.CreateOrderCommand;
+import com.syrisa.tr.ordersservice.core.model.OrderStatus;
+import com.syrisa.tr.ordersservice.core.model.OrderSummary;
+import com.syrisa.tr.ordersservice.query.FindOrdersQuery;
 import lombok.RequiredArgsConstructor;
 import org.axonframework.commandhandling.gateway.CommandGateway;
+import org.axonframework.messaging.responsetypes.ResponseTypes;
+import org.axonframework.queryhandling.QueryGateway;
+import org.axonframework.queryhandling.SubscriptionQueryResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,9 +23,10 @@ import java.util.UUID;
 public class OrdersCommandController {
 
     private final CommandGateway commandGateway;
+    private final QueryGateway queryGateway;
 
     @PostMapping
-    public String createOrder(@Valid @RequestBody CreateOrderRestModel createOrderRestModel){
+    public OrderSummary createOrder(@Valid @RequestBody CreateOrderRestModel createOrderRestModel){
         String returnValue = "";
         CreateOrderCommand createOrderCommand = CreateOrderCommand.builder()
                 .orderId(UUID.randomUUID().toString())
@@ -30,7 +36,17 @@ public class OrdersCommandController {
                 .addressId(createOrderRestModel.getAddressId())
                 .orderStatus(OrderStatus.CREATED)
                 .build();
-        returnValue = commandGateway.sendAndWait(createOrderCommand);
-        return returnValue;
+
+        SubscriptionQueryResult<OrderSummary,OrderSummary> queryResult = queryGateway.subscriptionQuery(
+                new FindOrdersQuery(createOrderCommand.getOrderId()),
+                ResponseTypes.instanceOf(OrderSummary.class),
+                ResponseTypes.instanceOf(OrderSummary.class)
+        );
+        try {
+            commandGateway.sendAndWait(createOrderCommand);
+            return  queryResult.updates().blockFirst();
+        }finally {
+            queryResult.close();
+        }
     }
 }

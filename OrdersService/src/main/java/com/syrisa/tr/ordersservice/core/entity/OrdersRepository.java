@@ -5,4 +5,5 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public interface OrdersRepository extends JpaRepository<OrderEntity, String> {
+    OrderEntity findByOrderId(String orderId);
 }

@@ -1,6 +1,8 @@
 package com.syrisa.tr.ordersservice.query;
 
+import com.syrisa.tr.ordersservice.core.entity.OrderEntity;
 import com.syrisa.tr.ordersservice.core.entity.OrdersRepository;
+import com.syrisa.tr.ordersservice.core.model.OrderSummary;
 import com.syrisa.tr.ordersservice.query.rest.OrderRestModel;
 import lombok.RequiredArgsConstructor;
 import org.axonframework.queryhandling.QueryHandler;
@@ -14,7 +16,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class OrderQueryHandler {
     private final OrdersRepository ordersRepository;
-
+/*
     @QueryHandler
     public List<OrderRestModel> findOrders(FindOrdersQuery findOrdersQuery) {
         return ordersRepository.findAll().stream().map(order -> {
@@ -23,15 +25,12 @@ public class OrderQueryHandler {
             return orderRestModel;
         }).collect(Collectors.toList());
     }
-    /*
-    @QueryHandler
-    public OrderRestModel findOrderById(FindOrdersQuery findOrdersQuery){
-        return ordersRepository.findById(findOrdersQuery.getOrderId()).map(order -> {
-            OrderRestModel orderRestModel = new OrderRestModel();
-            BeanUtils.copyProperties(order,orderRestModel);
-            return orderRestModel;
-        }).orElseThrow(()->new IllegalArgumentException("Order not found!"));
-    }
 */
+    @QueryHandler
+    public OrderSummary findOrderById(FindOrdersQuery findOrdersQuery){
+        OrderEntity orderEntity = ordersRepository.findByOrderId(findOrdersQuery.getOrderId());
+        return new OrderSummary(orderEntity.getOrderId(), orderEntity.getOrderStatus(), "");
+    }
+
 }
 

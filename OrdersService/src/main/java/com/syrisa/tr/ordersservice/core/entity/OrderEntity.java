@@ -1,6 +1,6 @@
 package com.syrisa.tr.ordersservice.core.entity;
 
-import com.syrisa.tr.ordersservice.core.utils.OrderStatus;
+import com.syrisa.tr.ordersservice.core.model.OrderStatus;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,7 +13,7 @@ import javax.persistence.*;
 public class OrderEntity {
     @Id
     @Column(unique = true)
-    private String orderId;
+    public String orderId;
     private String productId;
     private String userId;
     private int quantity;

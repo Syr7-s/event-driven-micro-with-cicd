@@ -1,6 +1,6 @@
 package com.syrisa.tr.ordersservice.command.interceptor;
 
-import com.syrisa.tr.ordersservice.command.CreateOrderCommand;
+import com.syrisa.tr.ordersservice.command.commands.CreateOrderCommand;
 import com.syrisa.tr.ordersservice.core.entity.OrderLookupEntity;
 import com.syrisa.tr.ordersservice.core.entity.OrdersLookupRepository;
 import lombok.RequiredArgsConstructor;

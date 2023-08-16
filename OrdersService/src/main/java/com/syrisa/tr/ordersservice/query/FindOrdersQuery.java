@@ -3,12 +3,10 @@ package com.syrisa.tr.ordersservice.query;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-/*
-@NoArgsConstructor
-@Getter
-@Setter*/
+import lombok.Value;
+
+@Value
 public class FindOrdersQuery {
-   /* private String orderId;
-    public FindOrdersQuery(String orderId) {
-    }*/
+    private final  String orderId;
+
 }
