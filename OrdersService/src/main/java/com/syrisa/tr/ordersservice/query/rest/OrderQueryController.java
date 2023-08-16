@@ -1,4 +1,4 @@
-package com.syrisa.tr.ordersservice.query;
+package com.syrisa.tr.ordersservice.query.rest;
 
 import lombok.RequiredArgsConstructor;
 import org.axonframework.queryhandling.QueryGateway;
