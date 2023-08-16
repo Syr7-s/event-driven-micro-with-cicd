@@ -13,4 +13,3 @@ public class ProductReservedEvent {
     private final String orderId;
     private final String userId;
 }
-}
