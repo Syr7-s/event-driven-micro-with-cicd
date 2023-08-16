@@ -84,6 +84,12 @@
             <artifactId>spring-boot-starter-validation</artifactId>
             <version>3.1.2</version>
         </dependency>
+        <dependency>
+            <groupId>com.syrisa.tr</groupId>
+            <artifactId>core</artifactId>
+            <version>0.0.1</version>
+            <scope>compile</scope>
+        </dependency>
 
     </dependencies>
     <dependencyManagement>

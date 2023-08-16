@@ -1,5 +1,6 @@
 package com.syrisa.tr.productsservice.command;
 
+import com.syrisa.tr.core.commands.ReserveProductCommand;
 import com.syrisa.tr.productsservice.core.events.ProductCreatedEvent;
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.eventsourcing.EventSourcingHandler;
@@ -36,6 +37,23 @@ public class ProductAggregate {
         ProductCreatedEvent productCreatedEvent = new ProductCreatedEvent();
         BeanUtils.copyProperties(createProductCommand,productCreatedEvent);
         AggregateLifecycle.apply(productCreatedEvent);
+    }
+
+    @CommandHandler
+    public void handle(ReserveProductCommand reserveProductCommand){
+        // Validate Reserve Product Command
+        if (reserveProductCommand.getQuantity()<=0){
+            throw new IllegalArgumentException("Quantity cannot be less than or equal to zero");
+        }
+
+        if (this.quantity<reserveProductCommand.getQuantity()){
+            throw new IllegalArgumentException("Insufficient number of items in stock");
+        }
+
+        // Publish Product Reserved Event
+      /*  ProductReservedEvent productReservedEvent = new ProductReservedEvent(reserveProductCommand.getProductId(),
+                reserveProductCommand.getOrderId(),reserveProductCommand.getQuantity(),reserveProductCommand.getUserId());
+        AggregateLifecycle.apply(productReservedEvent);*/
     }
 
     @EventSourcingHandler
