@@ -1,6 +1,7 @@
 package com.syrisa.tr.ordersservice.saga;
 
 import com.syrisa.tr.core.commands.ReserveProductCommand;
+import com.syrisa.tr.core.events.ProductReservedEvent;
 import com.syrisa.tr.ordersservice.core.events.OrderCreatedEvent;
 import lombok.RequiredArgsConstructor;
 import org.axonframework.commandhandling.CommandCallback;
@@ -39,5 +40,10 @@ public class OrderSaga {
                 }
             }
         });
+    }
+
+    @SagaEventHandler(associationProperty = "orderId")
+    public void handle(ProductReservedEvent productReservedEvent) {
+        // Send a ProcessPaymentCommand to the CommandGateway
     }
 }
