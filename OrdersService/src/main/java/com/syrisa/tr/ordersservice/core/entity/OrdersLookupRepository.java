@@ -5,4 +5,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface OrdersLookupRepository extends JpaRepository<OrderLookupEntity,String> {
+    OrderLookupEntity findByOrderId(String orderId);
 }
