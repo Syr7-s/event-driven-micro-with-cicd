@@ -21,9 +21,9 @@ public class OrderQueryController {
     public List<OrderRestModel> getOrders() {
         return queryGateway.query(new FindOrdersQuery(), ResponseTypes.multipleInstancesOf(OrderRestModel.class)).join();
     }
-
+/*
     @GetMapping("/{orderId}")
     public OrderRestModel getOrderById(@PathVariable String orderId) {
         return queryGateway.query(new FindOrdersQuery(orderId), ResponseTypes.instanceOf(OrderRestModel.class)).join();
-    }
+    }*/
 }

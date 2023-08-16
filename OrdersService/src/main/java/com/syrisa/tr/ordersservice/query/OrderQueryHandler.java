@@ -16,14 +16,14 @@ public class OrderQueryHandler {
     private final OrdersRepository ordersRepository;
 
     @QueryHandler
-    public List<OrderRestModel> findOrders(FindOrdersQuery findOrdersQuery){
+    public List<OrderRestModel> findOrders(FindOrdersQuery findOrdersQuery) {
         return ordersRepository.findAll().stream().map(order -> {
             OrderRestModel orderRestModel = new OrderRestModel();
-            BeanUtils.copyProperties(order,orderRestModel);
+            BeanUtils.copyProperties(order, orderRestModel);
             return orderRestModel;
         }).collect(Collectors.toList());
     }
-
+    /*
     @QueryHandler
     public OrderRestModel findOrderById(FindOrdersQuery findOrdersQuery){
         return ordersRepository.findById(findOrdersQuery.getOrderId()).map(order -> {
@@ -32,4 +32,6 @@ public class OrderQueryHandler {
             return orderRestModel;
         }).orElseThrow(()->new IllegalArgumentException("Order not found!"));
     }
+*/
 }
+

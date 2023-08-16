@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.syrisa.tr</groupId>
     <artifactId>OrdersService</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.1</version>
     <name>OrdersService</name>
     <description>OrdersService</description>
     <properties>
@@ -82,7 +82,17 @@
             <version>3.1.2</version>
         </dependency>
     </dependencies>
-
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
     <build>
         <plugins>
             <plugin>
