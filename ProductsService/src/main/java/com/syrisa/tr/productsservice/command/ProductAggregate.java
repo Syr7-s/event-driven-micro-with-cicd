@@ -1,6 +1,7 @@
 package com.syrisa.tr.productsservice.command;
 
 import com.syrisa.tr.core.commands.ReserveProductCommand;
+import com.syrisa.tr.core.events.ProductReservedEvent;
 import com.syrisa.tr.productsservice.core.events.ProductCreatedEvent;
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.eventsourcing.EventSourcingHandler;
@@ -51,9 +52,14 @@ public class ProductAggregate {
         }
 
         // Publish Product Reserved Event
-      /*  ProductReservedEvent productReservedEvent = new ProductReservedEvent(reserveProductCommand.getProductId(),
-                reserveProductCommand.getOrderId(),reserveProductCommand.getQuantity(),reserveProductCommand.getUserId());
-        AggregateLifecycle.apply(productReservedEvent);*/
+        ProductReservedEvent productReservedEvent = ProductReservedEvent.builder()
+                .orderId(reserveProductCommand.getOrderId())
+                .productId(reserveProductCommand.getProductId())
+                .quantity(reserveProductCommand.getQuantity())
+                .userId(reserveProductCommand.getUserId())
+                .build();
+
+        AggregateLifecycle.apply(productReservedEvent);
     }
 
     @EventSourcingHandler
@@ -63,6 +69,12 @@ public class ProductAggregate {
         this.price = productCreatedEvent.getPrice();
         this.quantity = productCreatedEvent.getQuantity();
         this.title = productCreatedEvent.getTitle();
+    }
+
+    @EventSourcingHandler // This annotation is used to define the event that will be handled by the aggregate.
+    public void on(ProductReservedEvent productReservedEvent){
+        // Update Product in the database
+        this.quantity -= productReservedEvent.getQuantity();
     }
 
 }
