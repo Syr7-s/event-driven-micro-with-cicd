@@ -1,5 +1,6 @@
 package com.syrisa.tr.productsservice.query;
 
+import com.syrisa.tr.core.events.ProductReservedEvent;
 import com.syrisa.tr.productsservice.core.data.ProductEntity;
 import com.syrisa.tr.productsservice.core.data.ProductsRepository;
 import com.syrisa.tr.productsservice.core.events.ProductCreatedEvent;
@@ -41,5 +42,12 @@ public class ProductEventsHandler {
             throw new Exception("Forcing exception in the Event Handler");
         }*/
 
+    }
+
+    @EventHandler
+    public void on(ProductReservedEvent productReservedEvent){
+        ProductEntity productEntity = productsRepository.findByProductId(productReservedEvent.getProductId());
+        productEntity.setQuantity(productEntity.getQuantity()-productReservedEvent.getQuantity());
+        productsRepository.save(productEntity);
     }
 }
