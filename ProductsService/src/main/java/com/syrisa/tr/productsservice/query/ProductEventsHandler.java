@@ -1,5 +1,6 @@
 package com.syrisa.tr.productsservice.query;
 
+import com.syrisa.tr.core.events.ProductReservationCancelledEvent;
 import com.syrisa.tr.core.events.ProductReservedEvent;
 import com.syrisa.tr.productsservice.core.data.ProductEntity;
 import com.syrisa.tr.productsservice.core.data.ProductsRepository;
@@ -49,5 +50,12 @@ public class ProductEventsHandler {
         ProductEntity productEntity = productsRepository.findByProductId(productReservedEvent.getProductId());
         productEntity.setQuantity(productEntity.getQuantity()-productReservedEvent.getQuantity());
         productsRepository.save(productEntity);
+    }
+
+    @EventHandler
+    public void on(ProductReservationCancelledEvent productReservationCancelledEvent) {
+    	ProductEntity productEntity = productsRepository.findByProductId(productReservationCancelledEvent.getProductId());
+    	productEntity.setQuantity(productEntity.getQuantity() + productReservationCancelledEvent.getQuantity());
+    	productsRepository.save(productEntity);
     }
 }

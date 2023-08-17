@@ -1,6 +1,8 @@
 package com.syrisa.tr.productsservice.command;
 
+import com.syrisa.tr.core.commands.CancelProductReservationCommand;
 import com.syrisa.tr.core.commands.ReserveProductCommand;
+import com.syrisa.tr.core.events.ProductReservationCancelledEvent;
 import com.syrisa.tr.core.events.ProductReservedEvent;
 import com.syrisa.tr.productsservice.core.events.ProductCreatedEvent;
 import org.axonframework.commandhandling.CommandHandler;
@@ -62,6 +64,21 @@ public class ProductAggregate {
         AggregateLifecycle.apply(productReservedEvent);
     }
 
+
+    @CommandHandler
+    public void handle(CancelProductReservationCommand cancelProductReservationCommand){
+        // Publish Product Reservation Cancelled Event
+        ProductReservationCancelledEvent productReservationCancelledEvent = ProductReservationCancelledEvent.builder()
+                .orderId(cancelProductReservationCommand.getOrderId())
+                .productId(cancelProductReservationCommand.getProductId())
+                .quantity(cancelProductReservationCommand.getQuantity())
+                .userId(cancelProductReservationCommand.getUserId())
+                .reason(cancelProductReservationCommand.getReason())
+                .build();
+
+        AggregateLifecycle.apply(productReservationCancelledEvent);
+    }
+
     @EventSourcingHandler
     public void on(ProductCreatedEvent productCreatedEvent){
         // Save Product to the database
@@ -75,6 +92,12 @@ public class ProductAggregate {
     public void on(ProductReservedEvent productReservedEvent){
         // Update Product in the database
         this.quantity -= productReservedEvent.getQuantity();
+    }
+
+    @EventSourcingHandler
+    public void on(ProductReservationCancelledEvent productReservationCancelledEvent){
+        // Update Product in the database
+        this.quantity += productReservationCancelledEvent.getQuantity();
     }
 
 }

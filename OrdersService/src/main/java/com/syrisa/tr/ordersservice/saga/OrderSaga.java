@@ -4,6 +4,7 @@ import com.syrisa.tr.core.commands.CancelProductReservationCommand;
 import com.syrisa.tr.core.commands.ProcessPaymentCommand;
 import com.syrisa.tr.core.commands.ReserveProductCommand;
 import com.syrisa.tr.core.events.PaymentProcessedEvent;
+import com.syrisa.tr.core.events.ProductReservationCancelledEvent;
 import com.syrisa.tr.core.events.ProductReservedEvent;
 import com.syrisa.tr.core.model.User;
 import com.syrisa.tr.core.query.FetchUserPaymentDetailsQuery;
@@ -154,5 +155,12 @@ public class OrderSaga {
         //  ApproveOrderCommand approveOrderCommand = new ApproveOrderCommand(orderApprovedEvent.getOrderId());
         //  commandGateway.send(approveOrderCommand);
         // SagaLifecycle.end();
+    }
+
+    @SagaEventHandler(associationProperty = "orderId")
+    public void handle(ProductReservationCancelledEvent productReservationCancelledEvent) {
+        // Create and send a RejectOrderCommand
+        LOGGER.info("ProductReservationCancelledEvent is called for orderId: " + productReservationCancelledEvent.getOrderId());
+
     }
 }

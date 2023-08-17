@@ -29,8 +29,6 @@ ZOrdersService/src/main/java/com/syrisa/tr/ordersservice/core/events/OrderCreate
 ^OrdersService/src/main/java/com/syrisa/tr/ordersservice/command/rest/CreateOrderRestModel.java,a/1/a12b225b1ca793ff7d1f4945695953b0355b7a75
 ç
 ]PaymentsService/src/main/java/com/syrisa/tr/paymentsservice/core/data/PaymentsRepository.java,e/6/e62971de7e754dc9646f9560efbc5109d73a2ac8
-â
-YProductsService/src/main/java/com/syrisa/tr/productsservice/command/ProductAggregate.java,f/d/fdba00ce7ce58b42bea4d457241952586c2b620f
 ç
 ]ProductsService/src/main/java/com/syrisa/tr/productsservice/command/CreateProductCommand.java,6/e/6e4151616424ff502bf523e492e8a73997775b37
 ó
