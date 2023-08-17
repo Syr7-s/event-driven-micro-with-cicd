@@ -51,6 +51,8 @@ public class OrderEventsHandler {
     public void on(OrderApprovedEvent orderApprovedEvent) {
         OrderEntity orderEntity = ordersRepository.findByOrderId(orderApprovedEvent.getOrderId());
         if (orderEntity == null) {
+            LOGGER.info(orderApprovedEvent.getOrderId()+ " is not found");
+
             return;
         }
         orderEntity.setOrderStatus(orderApprovedEvent.getOrderStatus());
