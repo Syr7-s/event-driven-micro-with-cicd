@@ -16,7 +16,6 @@ import org.axonframework.spring.stereotype.Aggregate;
 import org.springframework.beans.BeanUtils;
 
 @Aggregate // Aggregate annotation is used to define the class as an aggregate.
-@NoArgsConstructor
 public class OrderAggregate {
 
     @AggregateIdentifier
@@ -26,6 +25,10 @@ public class OrderAggregate {
     private int quantity;
     private String addressId;
     private OrderStatus orderStatus;
+
+
+    public OrderAggregate() {
+    }
 
     @CommandHandler
     public OrderAggregate(CreateOrderCommand createOrderCommand) {

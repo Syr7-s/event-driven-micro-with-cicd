@@ -22,18 +22,20 @@ import org.axonframework.queryhandling.QueryGateway;
 import org.axonframework.spring.stereotype.Saga;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.Nonnull;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 @Saga
-@RequiredArgsConstructor
+
 public class OrderSaga {
 
-    private final transient CommandGateway commandGateway;
-
-    private final transient QueryGateway queryGateway;
+    @Autowired
+    private  transient CommandGateway commandGateway;
+    @Autowired
+    private  transient QueryGateway queryGateway;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(OrderSaga.class);
 
@@ -51,16 +53,24 @@ public class OrderSaga {
                 .build();
         LOGGER.info("In OrderSaga OrderCreatedEvent handled for orderId: " + reserveProductCommand.getOrderId() +
                 " and productId: " + reserveProductCommand.getProductId());
-        commandGateway.send(reserveProductCommand, new CommandCallback<ReserveProductCommand, Object>() {
+        /*commandGateway.send(reserveProductCommand, new CommandCallback<ReserveProductCommand, Object>() {
             @Override
             public void onResult(@Nonnull CommandMessage<? extends ReserveProductCommand> commandMessage, @Nonnull CommandResultMessage<?> commandResultMessage) {
                 if (commandResultMessage.isExceptional()) {
                     // Start a compensating transaction
+                    LOGGER.info("ReserveProductCommand is failed for orderId: " + reserveProductCommand.getOrderId() +
+                            " and productId: " + reserveProductCommand.getProductId());
                 } else {
                     // Send an ApproveOrderCommand to the CommandGateway
+                    LOGGER.info("ReserveProductCommand is successful for orderId: " + reserveProductCommand.getOrderId() +
+                            " and productId: " + reserveProductCommand.getProductId());
                 }
             }
-        });
+        });*/
+
+        commandGateway.send(reserveProductCommand);
+        LOGGER.info("ReserveProductCommand is successful for orderId: " + reserveProductCommand.getOrderId() +
+                " and productId: " + reserveProductCommand.getProductId());
     }
 
     @SagaEventHandler(associationProperty = "orderId")

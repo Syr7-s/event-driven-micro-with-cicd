@@ -1,8 +1,6 @@
 
 9
 	README.md,8/e/8ec9a00bfd09b3190ac6b22251dbb1aa95a0579d
-E
-OrdersService/pom.xml,5/a/5af9e81594186ceba2134f10c5724d805fcaff97
 C
 UserService/pom.xml,f/f/ffddcbafce9a6aa210161d0474661eebdc6c48b5
 o
@@ -13,12 +11,8 @@ e
 VOrdersService/src/main/java/com/syrisa/tr/ordersservice/query/rest/OrderRestModel.java,5/9/59f26145933896de29560fa5a97bb2f62f312702
 å
 \OrdersService/src/main/java/com/syrisa/tr/ordersservice/query/rest/OrderQueryController.java,b/5/b5e28053e9a406d0c71b94d0d976ce7af283cf64
-Ä
-PUserService/src/main/java/com/syrisa/tr/userservice/query/UserEventsHandler.java,5/e/5ef1ea8d9cea3417cb3582e3b7a906c890cd5def
 }
 Mcore/src/main/java/com/syrisa/tr/core/query/FetchUserPaymentDetailsQuery.java,b/e/be103204cacc4d035651d1d49deb80eff2ed4b8a
-à
-XUserService/src/main/java/com/syrisa/tr/userservice/query/rest/UsersQueryController.java,1/7/170cd36895fd8be0f658cb4004129612cb830508
 G
 ProductsService/pom.xml,b/5/b51fd832b03fcbd1174876c712ac265362e2048e
 G
@@ -37,13 +31,9 @@ ZOrdersService/src/main/java/com/syrisa/tr/ordersservice/core/events/OrderCreate
 ]PaymentsService/src/main/java/com/syrisa/tr/paymentsservice/core/data/PaymentsRepository.java,e/6/e62971de7e754dc9646f9560efbc5109d73a2ac8
 â
 YProductsService/src/main/java/com/syrisa/tr/productsservice/command/ProductAggregate.java,f/d/fdba00ce7ce58b42bea4d457241952586c2b620f
-ã
-[ProductsService/src/main/java/com/syrisa/tr/productsservice/query/ProductEventsHandler.java,0/2/0269f1f77dbd2e8516dc9d40092d42ae19213c8a
 ç
 ]ProductsService/src/main/java/com/syrisa/tr/productsservice/command/CreateProductCommand.java,6/e/6e4151616424ff502bf523e492e8a73997775b37
 ó
 gProductsService/src/main/java/com/syrisa/tr/productsservice/command/rest/ProductsCommandController.java,4/3/436f9e89b3b35d3fbf079573fcfbaa068d1b8c6d
 î
 dProductsService/src/main/java/com/syrisa/tr/productsservice/command/rest/CreateProductRestModel.java,f/4/f4c6eb2b453592d6e3ba0075a179abc829f0003f
-ë
-aOrdersService/src/main/java/com/syrisa/tr/ordersservice/command/rest/OrdersCommandController.java,0/c/0c4c81030f2bf9e15f522c286d153bec9b2fd0de
