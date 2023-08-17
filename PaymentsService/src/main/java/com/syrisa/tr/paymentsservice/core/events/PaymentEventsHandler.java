@@ -1,8 +1,8 @@
-package com.syrisa.tr.paymentsservice.query;
+package com.syrisa.tr.paymentsservice.core.events;
 
+import com.syrisa.tr.core.events.PaymentProcessedEvent;
 import com.syrisa.tr.paymentsservice.core.data.PaymentEntity;
 import com.syrisa.tr.paymentsservice.core.data.PaymentsRepository;
-import com.syrisa.tr.paymentsservice.core.events.PaymentProcessedEvent;
 import lombok.RequiredArgsConstructor;
 import org.axonframework.config.ProcessingGroup;
 import org.slf4j.Logger;
@@ -26,7 +26,7 @@ public class PaymentEventsHandler {
         BeanUtils.copyProperties(event, paymentEntity);
         try {
             paymentsRepository.save(paymentEntity);
-            LOGGER.info("OrderCreatedEvent is called for orderId: from EventsHandler " + event.getOrderId());
+            LOGGER.info("PaymentProcessedEvent is called for orderId: from EventsHandler " + event.getOrderId());
 
         } catch (IllegalArgumentException ex) {
             ex.printStackTrace();
