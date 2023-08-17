@@ -8,11 +8,12 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="core" />
+        <module name="PaymentsService" />
+        <module name="UserService" />
+        <module name="OrdersService" />
         <module name="ProductsService" />
         <module name="DiscoveryService" />
-        <module name="UserService" />
         <module name="ApiGateway" />
-        <module name="OrdersService" />
       </profile>
     </annotationProcessing>
   </component>
@@ -21,6 +22,7 @@
       <module name="ApiGateway" options="-parameters" />
       <module name="DiscoveryService" options="-parameters" />
       <module name="OrdersService" options="-parameters" />
+      <module name="PaymentsService" options="-parameters" />
       <module name="ProductsService" options="-parameters" />
       <module name="UserService" options="-parameters" />
       <module name="core" options="-parameters" />
