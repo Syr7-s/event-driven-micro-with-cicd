@@ -7,6 +7,7 @@ import com.syrisa.tr.core.events.ProductReservedEvent;
 import com.syrisa.tr.core.model.User;
 import com.syrisa.tr.core.query.FetchUserPaymentDetailsQuery;
 import com.syrisa.tr.ordersservice.command.commands.ApproveOrderCommand;
+import com.syrisa.tr.ordersservice.core.events.OrderApprovedEvent;
 import com.syrisa.tr.ordersservice.core.events.OrderCreatedEvent;
 import lombok.RequiredArgsConstructor;
 import org.axonframework.commandhandling.CommandCallback;
@@ -14,6 +15,7 @@ import org.axonframework.commandhandling.CommandMessage;
 import org.axonframework.commandhandling.CommandResultMessage;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.axonframework.messaging.responsetypes.ResponseTypes;
+import org.axonframework.modelling.saga.EndSaga;
 import org.axonframework.modelling.saga.SagaEventHandler;
 import org.axonframework.modelling.saga.StartSaga;
 import org.axonframework.queryhandling.QueryGateway;
@@ -106,5 +108,15 @@ public class OrderSaga {
         // Send a ApproveOrderCommand to the CommandGateway
         ApproveOrderCommand approveOrderCommand = new ApproveOrderCommand(paymentProcessedEvent.getOrderId());
         commandGateway.send(approveOrderCommand);
+    }
+
+    @EndSaga
+    @SagaEventHandler(associationProperty = "orderId")
+    public void handle(OrderApprovedEvent orderApprovedEvent) {
+        LOGGER.info("Order i approved.Order Saga is complete for orderId: " + orderApprovedEvent.getOrderId());
+        // Send a ApproveOrderCommand to the CommandGateway
+        //  ApproveOrderCommand approveOrderCommand = new ApproveOrderCommand(orderApprovedEvent.getOrderId());
+        //  commandGateway.send(approveOrderCommand);
+        // SagaLifecycle.end();
     }
 }
