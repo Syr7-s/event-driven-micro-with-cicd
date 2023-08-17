@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.syrisa.tr</groupId>
     <artifactId>UserService</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.1</version>
     <name>UserService</name>
     <description>UserService</description>
     <properties>
@@ -31,6 +31,17 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.axonframework/axon-spring-boot-starter -->
+        <dependency>
+            <groupId>org.axonframework</groupId>
+            <artifactId>axon-spring-boot-starter</artifactId>
+            <version>4.8.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.syrisa.tr</groupId>
+            <artifactId>core</artifactId>
+            <version>0.0.1</version>
         </dependency>
     </dependencies>
 
