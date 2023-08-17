@@ -11,6 +11,8 @@ import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.axonframework.modelling.saga.SagaEventHandler;
 import org.axonframework.modelling.saga.StartSaga;
 import org.axonframework.spring.stereotype.Saga;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nonnull;
 
@@ -20,16 +22,21 @@ public class OrderSaga {
 
     private final transient CommandGateway commandGateway;
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(OrderSaga.class);
+
+
     @StartSaga // This annotation is used to start the saga.
     @SagaEventHandler(associationProperty = "orderId") // This annotation is used to define the event that will be handled by the saga.
     public void handle(OrderCreatedEvent orderCreatedEvent) {
+        LOGGER.info("We are creating a saga for the order with id: " + orderCreatedEvent.getOrderId());
         ReserveProductCommand reserveProductCommand = ReserveProductCommand.builder()
                 .orderId(orderCreatedEvent.getOrderId())
                 .productId(orderCreatedEvent.getProductId())
                 .quantity(orderCreatedEvent.getQuantity())
                 .userId(orderCreatedEvent.getUserId())
                 .build();
-
+        LOGGER.info("In OrderSaga OrderCreatedEvent handled for orderId: " + reserveProductCommand.getOrderId() +
+                " and productId: " + reserveProductCommand.getProductId());
         commandGateway.send(reserveProductCommand, new CommandCallback<ReserveProductCommand, Object>() {
             @Override
             public void onResult(@Nonnull CommandMessage<? extends ReserveProductCommand> commandMessage, @Nonnull CommandResultMessage<?> commandResultMessage) {
@@ -45,5 +52,7 @@ public class OrderSaga {
     @SagaEventHandler(associationProperty = "orderId")
     public void handle(ProductReservedEvent productReservedEvent) {
         // Send a ProcessPaymentCommand to the CommandGateway
+        LOGGER.info("ProductReservedEvent is called for productId: " + productReservedEvent.getProductId() +
+                " and orderId: " + productReservedEvent.getOrderId());
     }
 }

@@ -9,6 +9,8 @@ import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.axonframework.messaging.responsetypes.ResponseTypes;
 import org.axonframework.queryhandling.QueryGateway;
 import org.axonframework.queryhandling.SubscriptionQueryResult;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +26,9 @@ public class OrdersCommandController {
 
     private final CommandGateway commandGateway;
     private final QueryGateway queryGateway;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(OrdersCommandController.class);
+
 
     @PostMapping
     public OrderSummary createOrder(@Valid @RequestBody CreateOrderRestModel createOrderRestModel){
@@ -43,8 +48,12 @@ public class OrdersCommandController {
                 ResponseTypes.instanceOf(OrderSummary.class)
         );
         try {
+            LOGGER.info("OrderCommandController-createOrder() -> CreateOrderCommand is sending...");
             commandGateway.sendAndWait(createOrderCommand);
-            return  queryResult.updates().blockFirst();
+            LOGGER.info("OrderCommandController-createOrder() -> CreateOrderCommand is sent.");
+            OrderSummary orderSummary = queryResult.updates().blockFirst();
+            LOGGER.info("OrderSummary is returned. %s",orderSummary.toString());
+            return  orderSummary;
         }finally {
             queryResult.close();
         }

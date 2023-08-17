@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.axonframework.config.ProcessingGroup;
 import org.axonframework.eventhandling.EventHandler;
 import org.axonframework.messaging.interceptors.ExceptionHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
@@ -17,6 +19,9 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class OrderEventsHandler {
     private final OrdersRepository ordersRepository;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(OrderEventsHandler.class);
+
 
     @ExceptionHandler(resultType = Exception.class)
     public void handle(Exception exception) throws Exception {
@@ -34,6 +39,8 @@ public class OrderEventsHandler {
         BeanUtils.copyProperties(orderCreatedEvent, orderEntity);
         try {
             ordersRepository.save(orderEntity);
+            LOGGER.info("OrderCreatedEvent is called for orderId: from EventsHandler " + orderCreatedEvent.getOrderId());
+
         } catch (IllegalArgumentException ex) {
             ex.printStackTrace();
         }
