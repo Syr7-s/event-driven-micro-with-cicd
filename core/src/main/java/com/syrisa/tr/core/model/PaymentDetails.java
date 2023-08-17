@@ -1,4 +1,4 @@
-package com.syrisa.tr.core.commands;
+package com.syrisa.tr.core.model;
 
 import lombok.Builder;
 import lombok.Getter;

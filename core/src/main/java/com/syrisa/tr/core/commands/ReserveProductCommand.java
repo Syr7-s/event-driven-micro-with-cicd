@@ -6,7 +6,6 @@ import lombok.Setter;
 import org.axonframework.modelling.command.TargetAggregateIdentifier;
 
 @Getter
-@Setter
 @Builder
 public class ReserveProductCommand {
     @TargetAggregateIdentifier
