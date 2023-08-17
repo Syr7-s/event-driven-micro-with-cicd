@@ -1,0 +1,23 @@
+
+9
+	README.md,8/e/8ec9a00bfd09b3190ac6b22251dbb1aa95a0579d
+E
+OrdersService/pom.xml,5/a/5af9e81594186ceba2134f10c5724d805fcaff97
+C
+UserService/pom.xml,f/f/ffddcbafce9a6aa210161d0474661eebdc6c48b5
+o
+?core/src/main/java/com/syrisa/tr/core/model/PaymentDetails.java,b/e/be67679c675220bdfcc9cc9f7b2bda11af354c8f
+e
+5core/src/main/java/com/syrisa/tr/core/model/User.java,9/7/97be3413d8112fcae8ddbd0541c75b5c1a43bc12
+†
+VOrdersService/src/main/java/com/syrisa/tr/ordersservice/query/rest/OrderRestModel.java,5/9/59f26145933896de29560fa5a97bb2f62f312702
+Œ
+\OrdersService/src/main/java/com/syrisa/tr/ordersservice/query/rest/OrderQueryController.java,b/5/b5e28053e9a406d0c71b94d0d976ce7af283cf64
+€
+PUserService/src/main/java/com/syrisa/tr/userservice/query/UserEventsHandler.java,5/e/5ef1ea8d9cea3417cb3582e3b7a906c890cd5def
+}
+Mcore/src/main/java/com/syrisa/tr/core/query/FetchUserPaymentDetailsQuery.java,b/e/be103204cacc4d035651d1d49deb80eff2ed4b8a
+ˆ
+XUserService/src/main/java/com/syrisa/tr/userservice/query/rest/UsersQueryController.java,1/7/170cd36895fd8be0f658cb4004129612cb830508
+G
+ProductsService/pom.xml,b/5/b51fd832b03fcbd1174876c712ac265362e2048e
