@@ -1,5 +1,6 @@
 package com.syrisa.tr.ordersservice.saga;
 
+import com.syrisa.tr.core.commands.CancelProductReservationCommand;
 import com.syrisa.tr.core.commands.ProcessPaymentCommand;
 import com.syrisa.tr.core.commands.ReserveProductCommand;
 import com.syrisa.tr.core.events.PaymentProcessedEvent;
@@ -86,11 +87,13 @@ public class OrderSaga {
         } catch (Exception e) {
             // Start a compensating transaction
             LOGGER.error(e.getMessage());
+            cancelProductReservation(productReservedEvent, e.getMessage());
             return;
         }
         if (userPaymentDetails == null) {
             // Start a compensating transaction
             LOGGER.error("UserPaymentDetails is null for userId: " + productReservedEvent.getUserId());
+            cancelProductReservation(productReservedEvent, "UserPaymentDetails is null for userId: " + productReservedEvent.getUserId());
             return;
         }
         LOGGER.info("UserPaymentDetails fetched for userId: " + userPaymentDetails.getUserId());
@@ -106,10 +109,33 @@ public class OrderSaga {
         } catch (Exception e) {
             // Start a compensating transaction
             LOGGER.error(e.getMessage());
+            cancelProductReservation(productReservedEvent, e.getMessage());
+            return;
+
         }
 
-        LOGGER.info("The ProcessPaymentCommand resulted in NULL. Initiating compensating transaction...");
+        if (result == null) {
+            // Start a compensating transaction
+            LOGGER.error("The ProcessPaymentCommand resulted in NULL. Initiating compensating transaction...");
+            cancelProductReservation(productReservedEvent,"The ProcessPaymentCommand resulted in NULL. Initiating compensating transaction...");
 
+        }
+
+    }
+
+    private void cancelProductReservation(ProductReservedEvent productReservedEvent, String reason) {
+        LOGGER.info("Sending a CancelProductReservationCommand to compensate the transaction for productId: " +
+                productReservedEvent.getProductId() + " and orderId: " + productReservedEvent.getOrderId());
+        // Send a CancelProductReservationCommand to the CommandGateway
+        CancelProductReservationCommand cancelProductReservationCommand = CancelProductReservationCommand.builder()
+                .orderId(productReservedEvent.getOrderId())
+                .productId(productReservedEvent.getProductId())
+                .quantity(productReservedEvent.getQuantity())
+                .userId(productReservedEvent.getUserId())
+                .reason(reason)
+                .build();
+
+        commandGateway.send(cancelProductReservationCommand);
     }
 
     @SagaEventHandler(associationProperty = "orderId")
