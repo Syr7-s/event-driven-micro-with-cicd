@@ -1,5 +1,6 @@
 package com.syrisa.tr.ordersservice.saga;
 
+import com.syrisa.tr.core.commands.ProcessPaymentCommand;
 import com.syrisa.tr.core.commands.ReserveProductCommand;
 import com.syrisa.tr.core.events.ProductReservedEvent;
 import com.syrisa.tr.core.model.User;
@@ -19,6 +20,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nonnull;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 @Saga
 @RequiredArgsConstructor
@@ -76,5 +79,21 @@ public class OrderSaga {
             return;
         }
         LOGGER.info("UserPaymentDetails fetched for userId: " + userPaymentDetails.getUserId());
+
+        ProcessPaymentCommand processPaymentCommand = ProcessPaymentCommand.builder()
+                .orderId(productReservedEvent.getOrderId())
+                .paymentId(UUID.randomUUID().toString())
+                .paymentDetails(userPaymentDetails.getPaymentDetails())
+                .build();
+        String result = null;
+        try{
+           result =  commandGateway.sendAndWait(processPaymentCommand,10, TimeUnit.SECONDS);
+        }catch (Exception e){
+            // Start a compensating transaction
+            LOGGER.error(e.getMessage());
+        }
+
+        LOGGER.info("The ProcessPaymentCommand resulted in NULL. Initiating compensating transaction...");
+
     }
 }
