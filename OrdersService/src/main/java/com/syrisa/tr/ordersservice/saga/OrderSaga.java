@@ -6,6 +6,7 @@ import com.syrisa.tr.core.events.PaymentProcessedEvent;
 import com.syrisa.tr.core.events.ProductReservedEvent;
 import com.syrisa.tr.core.model.User;
 import com.syrisa.tr.core.query.FetchUserPaymentDetailsQuery;
+import com.syrisa.tr.ordersservice.command.commands.ApproveOrderCommand;
 import com.syrisa.tr.ordersservice.core.events.OrderCreatedEvent;
 import lombok.RequiredArgsConstructor;
 import org.axonframework.commandhandling.CommandCallback;
@@ -36,7 +37,8 @@ public class OrderSaga {
 
 
     @StartSaga // This annotation is used to start the saga.
-    @SagaEventHandler(associationProperty = "orderId") // This annotation is used to define the event that will be handled by the saga.
+    @SagaEventHandler(associationProperty = "orderId")
+    // This annotation is used to define the event that will be handled by the saga.
     public void handle(OrderCreatedEvent orderCreatedEvent) {
         LOGGER.info("We are creating a saga for the order with id: " + orderCreatedEvent.getOrderId());
         ReserveProductCommand reserveProductCommand = ReserveProductCommand.builder()
@@ -68,7 +70,7 @@ public class OrderSaga {
         User userPaymentDetails = null;
         try {
             // Send a ProcessPaymentCommand to the CommandGateway
-            userPaymentDetails  = queryGateway.query(fetchUserPaymentDetailsQuery, ResponseTypes.instanceOf(User.class)).join();
+            userPaymentDetails = queryGateway.query(fetchUserPaymentDetailsQuery, ResponseTypes.instanceOf(User.class)).join();
         } catch (Exception e) {
             // Start a compensating transaction
             LOGGER.error(e.getMessage());
@@ -87,9 +89,9 @@ public class OrderSaga {
                 .paymentDetails(userPaymentDetails.getPaymentDetails())
                 .build();
         String result = null;
-        try{
-           result =  commandGateway.sendAndWait(processPaymentCommand,10, TimeUnit.SECONDS);
-        }catch (Exception e){
+        try {
+            result = commandGateway.sendAndWait(processPaymentCommand, 10, TimeUnit.SECONDS);
+        } catch (Exception e) {
             // Start a compensating transaction
             LOGGER.error(e.getMessage());
         }
@@ -99,8 +101,10 @@ public class OrderSaga {
     }
 
     @SagaEventHandler(associationProperty = "orderId")
-     public void handle(PaymentProcessedEvent paymentProcessedEvent){
+    public void handle(PaymentProcessedEvent paymentProcessedEvent) {
         LOGGER.info("PaymentProcessedEvent is called for orderId: " + paymentProcessedEvent.getOrderId());
         // Send a ApproveOrderCommand to the CommandGateway
-        }
+        ApproveOrderCommand approveOrderCommand = new ApproveOrderCommand(paymentProcessedEvent.getOrderId());
+        commandGateway.send(approveOrderCommand);
+    }
 }
