@@ -9,12 +9,10 @@ import com.syrisa.tr.core.events.ProductReservedEvent;
 import com.syrisa.tr.core.model.User;
 import com.syrisa.tr.core.query.FetchUserPaymentDetailsQuery;
 import com.syrisa.tr.ordersservice.command.commands.ApproveOrderCommand;
+import com.syrisa.tr.ordersservice.command.commands.RejectOrderCommand;
 import com.syrisa.tr.ordersservice.core.events.OrderApprovedEvent;
 import com.syrisa.tr.ordersservice.core.events.OrderCreatedEvent;
-import lombok.RequiredArgsConstructor;
-import org.axonframework.commandhandling.CommandCallback;
-import org.axonframework.commandhandling.CommandMessage;
-import org.axonframework.commandhandling.CommandResultMessage;
+import com.syrisa.tr.ordersservice.core.events.OrderRejectedEvent;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.axonframework.messaging.responsetypes.ResponseTypes;
 import org.axonframework.modelling.saga.EndSaga;
@@ -26,7 +24,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.annotation.Nonnull;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -35,9 +32,9 @@ import java.util.concurrent.TimeUnit;
 public class OrderSaga {
 
     @Autowired
-    private  transient CommandGateway commandGateway;
+    private transient CommandGateway commandGateway;
     @Autowired
-    private  transient QueryGateway queryGateway;
+    private transient QueryGateway queryGateway;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(OrderSaga.class);
 
@@ -118,7 +115,7 @@ public class OrderSaga {
         if (result == null) {
             // Start a compensating transaction
             LOGGER.error("The ProcessPaymentCommand resulted in NULL. Initiating compensating transaction...");
-            cancelProductReservation(productReservedEvent,"The ProcessPaymentCommand resulted in NULL. Initiating compensating transaction...");
+            cancelProductReservation(productReservedEvent, "The ProcessPaymentCommand resulted in NULL. Initiating compensating transaction...");
 
         }
 
@@ -161,6 +158,13 @@ public class OrderSaga {
     public void handle(ProductReservationCancelledEvent productReservationCancelledEvent) {
         // Create and send a RejectOrderCommand
         LOGGER.info("ProductReservationCancelledEvent is called for orderId: " + productReservationCancelledEvent.getOrderId());
+        RejectOrderCommand rejectOrderCommand = new RejectOrderCommand(productReservationCancelledEvent.getOrderId(),
+                productReservationCancelledEvent.getReason());
+        commandGateway.send(rejectOrderCommand);
+    }
 
+    @SagaEventHandler(associationProperty = "orderId")
+    public void handle(OrderRejectedEvent orderRejectedEvent) {
+        LOGGER.info("Successfully rejected order with id  " + orderRejectedEvent.getOrderId());
     }
 }

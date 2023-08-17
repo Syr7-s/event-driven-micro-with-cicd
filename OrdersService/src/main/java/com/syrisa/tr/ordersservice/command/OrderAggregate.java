@@ -81,12 +81,9 @@ public class OrderAggregate {
 
     @CommandHandler
     public void handle(RejectOrderCommand rejectOrderCommand) {
-
     	OrderRejectedEvent orderRejectedEvent = new OrderRejectedEvent(rejectOrderCommand.getOrderId(),
     			rejectOrderCommand.getReason());
-
     	AggregateLifecycle.apply(orderRejectedEvent);
-
     }
 
     @EventSourcingHandler

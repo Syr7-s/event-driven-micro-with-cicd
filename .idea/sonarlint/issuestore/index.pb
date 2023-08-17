@@ -19,8 +19,6 @@ G
 PaymentsService/pom.xml,7/a/7ac12e40043218c7cc6338c425422d2ed59cbdf1
 ä
 ZOrdersService/src/main/java/com/syrisa/tr/ordersservice/core/events/OrderCreatedEvent.java,3/4/34e12021d8219fc1786fd7d6b4d5672695b9f004
-ã
-[OrdersService/src/main/java/com/syrisa/tr/ordersservice/core/events/OrderRejectedEvent.java,0/f/0f662983d6daf286202fd633271ead45ab9c658e
 ç
 ]OrdersService/src/main/java/com/syrisa/tr/ordersservice/command/OrderLookupEventsHandler.java,2/3/2397ce868a54e313a09df8410b47072fc666ff60
 ê
