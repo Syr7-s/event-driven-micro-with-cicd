@@ -21,8 +21,6 @@ Mcore/src/main/java/com/syrisa/tr/core/query/FetchUserPaymentDetailsQuery.java,
 XUserService/src/main/java/com/syrisa/tr/userservice/query/rest/UsersQueryController.java,1/7/170cd36895fd8be0f658cb4004129612cb830508
 G
 ProductsService/pom.xml,b/5/b51fd832b03fcbd1174876c712ac265362e2048e
-{
-KOrdersService/src/main/java/com/syrisa/tr/ordersservice/saga/OrderSaga.java,f/a/fabd665b35b6282fc8b5cdb2aee8acc2bf3fa744
 G
 PaymentsService/pom.xml,7/a/7ac12e40043218c7cc6338c425422d2ed59cbdf1
 Š

@@ -2,6 +2,7 @@ package com.syrisa.tr.ordersservice.saga;
 
 import com.syrisa.tr.core.commands.ProcessPaymentCommand;
 import com.syrisa.tr.core.commands.ReserveProductCommand;
+import com.syrisa.tr.core.events.PaymentProcessedEvent;
 import com.syrisa.tr.core.events.ProductReservedEvent;
 import com.syrisa.tr.core.model.User;
 import com.syrisa.tr.core.query.FetchUserPaymentDetailsQuery;
@@ -96,4 +97,10 @@ public class OrderSaga {
         LOGGER.info("The ProcessPaymentCommand resulted in NULL. Initiating compensating transaction...");
 
     }
+
+    @SagaEventHandler(associationProperty = "orderId")
+     public void handle(PaymentProcessedEvent paymentProcessedEvent){
+        LOGGER.info("PaymentProcessedEvent is called for orderId: " + paymentProcessedEvent.getOrderId());
+        // Send a ApproveOrderCommand to the CommandGateway
+        }
 }
