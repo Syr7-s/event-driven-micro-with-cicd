@@ -21,6 +21,10 @@ public class PaymentAggregate {
     @CommandHandler
     public PaymentAggregate(ProcessPaymentCommand processPaymentCommand) {
 
+        if (processPaymentCommand.getPaymentDetails() == null) {
+            throw new IllegalArgumentException("Payment details must not be null");
+        }
+
         if (processPaymentCommand.getOrderId() == null || processPaymentCommand.getOrderId().isBlank()) {
             throw new IllegalArgumentException("Order id must not be null or blank");
         }
