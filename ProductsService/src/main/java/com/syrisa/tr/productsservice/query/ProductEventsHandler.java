@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.axonframework.config.ProcessingGroup;
 import org.axonframework.eventhandling.EventHandler;
 import org.axonframework.messaging.interceptors.ExceptionHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +20,8 @@ import org.springframework.stereotype.Component;
 public class ProductEventsHandler {
 
     private final ProductsRepository productsRepository;
+
+    private final Logger LOGGER = LoggerFactory.getLogger(ProductEventsHandler.class);
 
     @ExceptionHandler(resultType = Exception.class)
     public void handle(Exception exception) throws Exception {
@@ -47,15 +51,22 @@ public class ProductEventsHandler {
 
     @EventHandler
     public void on(ProductReservedEvent productReservedEvent){
+
+        LOGGER.debug("ProductReservedEven: Current Product quantity  "+productReservedEvent.getQuantity());
+
         ProductEntity productEntity = productsRepository.findByProductId(productReservedEvent.getProductId());
         productEntity.setQuantity(productEntity.getQuantity()-productReservedEvent.getQuantity());
         productsRepository.save(productEntity);
+
+        LOGGER.debug("ProductReservedEven: New Product quantity  "+productEntity.getQuantity());
     }
 
     @EventHandler
     public void on(ProductReservationCancelledEvent productReservationCancelledEvent) {
     	ProductEntity productEntity = productsRepository.findByProductId(productReservationCancelledEvent.getProductId());
+        LOGGER.debug("ProductReservedEven: Current Product quantity  "+productReservationCancelledEvent.getQuantity());
     	productEntity.setQuantity(productEntity.getQuantity() + productReservationCancelledEvent.getQuantity());
     	productsRepository.save(productEntity);
+        LOGGER.debug("ProductReservedEven: Current Product quantity  "+productReservationCancelledEvent.getQuantity());
     }
 }

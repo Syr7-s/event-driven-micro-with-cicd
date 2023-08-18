@@ -1,0 +1,9 @@
+
+q
+java:S1450"TRemove the "price" field and declare it as a local variable in the relevant methods.(μω¥λ8Τ‚¨ 1
+v
+java:S1450"TRemove the "title" field and declare it as a local variable in the relevant methods.(ευςΉύÿÿÿÿ8Τ‚¨ 1
+K
+java:S1068")Remove this unused "title" private field.(ευςΉύÿÿÿÿ8ή‚¨ 1
+F
+java:S1068")Remove this unused "price" private field.(μω¥λ8ή‚¨ 1
