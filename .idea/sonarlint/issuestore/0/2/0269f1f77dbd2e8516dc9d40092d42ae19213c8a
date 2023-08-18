@@ -1,0 +1,12 @@
+
+g	java:S112"FDefine and throw a dedicated exception instead of using a generic one.(øñ¼ºúÿÿÿÿ8Éôç¸ 1
+g	java:S112%"FDefine and throw a dedicated exception instead of using a generic one.(ôÕìÏûÿÿÿÿ8Êôç¸ 1
+
+java:S11927"pDefine a constant instead of duplicating this literal "ProductReservedEven: Current Product quantity  " 3 times.(ÄšÕâ8²½ô¸ 1
+r	java:S116"QRename this field "LOGGER" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¿Ã‚ úÿÿÿÿ8Ğõç¸ 1
+T	java:S106!"9Replace this use of System.out or System.err by a logger.(Á¿ñE8éõç¸ 1
+]	java:S125."<This block of commented-out lines of code should be removed.(ùÌÒ¡ûÿÿÿÿ8”öç¸ 1
+^
+java:S34577"AFormat specifiers should be used instead of string concatenation.(ÄšÕâ8×Òë¸ 1
+^
+java:S3457="AFormat specifiers should be used instead of string concatenation.(üÙÆÄ8«Øî¸ 1

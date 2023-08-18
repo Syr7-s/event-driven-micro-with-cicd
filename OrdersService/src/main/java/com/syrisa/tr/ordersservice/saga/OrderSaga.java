@@ -24,6 +24,7 @@ import org.axonframework.queryhandling.QueryGateway;
 import org.axonframework.spring.stereotype.Saga;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
@@ -33,18 +34,12 @@ import java.util.concurrent.TimeUnit;
 @Saga
 public class OrderSaga {
 
-
-    private final transient CommandGateway commandGateway;
-
-    private final transient QueryGateway queryGateway;
-
-    private final transient DeadlineManager deadlineManager;
-
-    public OrderSaga(CommandGateway commandGateway, QueryGateway queryGateway, DeadlineManager deadlineManager) {
-        this.commandGateway = commandGateway;
-        this.queryGateway = queryGateway;
-        this.deadlineManager = deadlineManager;
-    }
+    @Autowired
+    private transient CommandGateway commandGateway;
+    @Autowired
+    private transient QueryGateway queryGateway;
+    @Autowired
+    private transient DeadlineManager deadlineManager;
 
     private static final String PAYMENT_PROCESSING_DEADLINE = "paymentProcessingDeadline";
 
@@ -106,12 +101,8 @@ public class OrderSaga {
         }
         LOGGER.info("UserPaymentDetails fetched for userId: " + userPaymentDetails.getUserId());
 
-        scheduleId = deadlineManager.schedule(Duration.of(10, ChronoUnit.SECONDS),
+        scheduleId = deadlineManager.schedule(Duration.of(120, ChronoUnit.SECONDS),
                 PAYMENT_PROCESSING_DEADLINE, productReservedEvent);
-
-        if (true) {
-            return;
-        }
 
         ProcessPaymentCommand processPaymentCommand = ProcessPaymentCommand.builder()
                 .orderId(productReservedEvent.getOrderId())
