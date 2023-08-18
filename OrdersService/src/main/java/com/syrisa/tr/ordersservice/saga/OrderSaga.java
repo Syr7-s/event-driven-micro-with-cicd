@@ -15,6 +15,7 @@ import com.syrisa.tr.ordersservice.core.events.OrderCreatedEvent;
 import com.syrisa.tr.ordersservice.core.events.OrderRejectedEvent;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.axonframework.deadline.DeadlineManager;
+import org.axonframework.deadline.annotation.DeadlineHandler;
 import org.axonframework.messaging.responsetypes.ResponseTypes;
 import org.axonframework.modelling.saga.EndSaga;
 import org.axonframework.modelling.saga.SagaEventHandler;
@@ -23,7 +24,6 @@ import org.axonframework.queryhandling.QueryGateway;
 import org.axonframework.spring.stereotype.Saga;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
@@ -31,16 +31,22 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 @Saga
-
 public class OrderSaga {
 
-    @Autowired
-    private transient CommandGateway commandGateway;
-    @Autowired
-    private transient QueryGateway queryGateway;
 
-    @Autowired
-    private transient DeadlineManager deadlineManager;
+    private final transient CommandGateway commandGateway;
+
+    private final transient QueryGateway queryGateway;
+
+    private final transient DeadlineManager deadlineManager;
+
+    public OrderSaga(CommandGateway commandGateway, QueryGateway queryGateway, DeadlineManager deadlineManager) {
+        this.commandGateway = commandGateway;
+        this.queryGateway = queryGateway;
+        this.deadlineManager = deadlineManager;
+    }
+
+    private static final String PAYMENT_PROCESSING_DEADLINE = "paymentProcessingDeadline";
 
     private static final Logger LOGGER = LoggerFactory.getLogger(OrderSaga.class);
 
@@ -56,22 +62,18 @@ public class OrderSaga {
                 .quantity(orderCreatedEvent.getQuantity())
                 .userId(orderCreatedEvent.getUserId())
                 .build();
-        LOGGER.info("In OrderSaga OrderCreatedEvent handled for orderId: " + reserveProductCommand.getOrderId() +
-                " and productId: " + reserveProductCommand.getProductId());
-        /*commandGateway.send(reserveProductCommand, new CommandCallback<ReserveProductCommand, Object>() {
-            @Override
-            public void onResult(@Nonnull CommandMessage<? extends ReserveProductCommand> commandMessage, @Nonnull CommandResultMessage<?> commandResultMessage) {
-                if (commandResultMessage.isExceptional()) {
-                    // Start a compensating transaction
-                    LOGGER.info("ReserveProductCommand is failed for orderId: " + reserveProductCommand.getOrderId() +
-                            " and productId: " + reserveProductCommand.getProductId());
-                } else {
-                    // Send an ApproveOrderCommand to the CommandGateway
-                    LOGGER.info("ReserveProductCommand is successful for orderId: " + reserveProductCommand.getOrderId() +
-                            " and productId: " + reserveProductCommand.getProductId());
-                }
+        LOGGER.info("In OrderSaga OrderCreatedEvent handled for orderId: " + reserveProductCommand.getOrderId() + " and productId: " + reserveProductCommand.getProductId());
+        commandGateway.send(reserveProductCommand, (commandMessage, commandResultMessage) -> {
+            if (commandResultMessage.isExceptional()) {
+                // Start a compensating transaction
+                LOGGER.info("ReserveProductCommand is failed for orderId: " + reserveProductCommand.getOrderId() +
+                        " and productId: " + reserveProductCommand.getProductId());
+            } else {
+                // Send an ApproveOrderCommand to the CommandGateway
+                LOGGER.info("ReserveProductCommand is successful for orderId: " + reserveProductCommand.getOrderId() +
+                        " and productId: " + reserveProductCommand.getProductId());
             }
-        });*/
+        });
 
         commandGateway.send(reserveProductCommand);
         LOGGER.info("ReserveProductCommand is successful for orderId: " + reserveProductCommand.getOrderId() +
@@ -103,9 +105,9 @@ public class OrderSaga {
         LOGGER.info("UserPaymentDetails fetched for userId: " + userPaymentDetails.getUserId());
 
         deadlineManager.schedule(Duration.of(10, ChronoUnit.SECONDS),
-                "paymentProcessingDeadline", productReservedEvent);
+                PAYMENT_PROCESSING_DEADLINE, productReservedEvent);
 
-        if (true){
+        if (true) {
             return;
         }
 
@@ -151,7 +153,7 @@ public class OrderSaga {
 
     @SagaEventHandler(associationProperty = "orderId")
     public void handle(PaymentProcessedEvent paymentProcessedEvent) {
-        deadlineManager.cancelAll("paymentProcessingDeadline");
+        deadlineManager.cancelAll(PAYMENT_PROCESSING_DEADLINE);
 
         LOGGER.info("PaymentProcessedEvent is called for orderId: " + paymentProcessedEvent.getOrderId());
         // Send a ApproveOrderCommand to the CommandGateway
@@ -182,4 +184,11 @@ public class OrderSaga {
     public void handle(OrderRejectedEvent orderRejectedEvent) {
         LOGGER.info("Successfully rejected order with id  " + orderRejectedEvent.getOrderId());
     }
+    @DeadlineHandler(deadlineName = PAYMENT_PROCESSING_DEADLINE)
+    public void handlePaymentDeadline(ProductReservedEvent productReservedEvent){
+        LOGGER.info("Payment Processing Deadline took place. Sending a compensating command to cancel the product reservation for productId: " +
+                productReservedEvent.getProductId() + " and orderId: " + productReservedEvent.getOrderId());
+        cancelProductReservation(productReservedEvent, "Payment timeout occurred. Cancelling the product reservation...");
+    }
+
 }

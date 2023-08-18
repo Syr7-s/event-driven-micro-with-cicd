@@ -77,3 +77,11 @@ UOrdersService/src/main/java/com/syrisa/tr/ordersservice/query/OrderEventsHandle
 SOrdersService/src/main/java/com/syrisa/tr/ordersservice/command/OrderAggregate.java,6/0/60e7d01c5c3345244de4dba876deadd05a6fd47b
 ‹
 [OrdersService/src/main/java/com/syrisa/tr/ordersservice/core/events/OrderRejectedEvent.java,0/f/0f662983d6daf286202fd633271ead45ab9c658e
+Š
+ZOrdersService/src/main/java/com/syrisa/tr/ordersservice/core/events/OrderCreatedEvent.java,3/4/34e12021d8219fc1786fd7d6b4d5672695b9f004
+‹
+[ProductsService/src/main/java/com/syrisa/tr/productsservice/query/ProductEventsHandler.java,0/2/0269f1f77dbd2e8516dc9d40092d42ae19213c8a
+H
+DiscoveryService/pom.xml,1/a/1a9d5f7fe6679e31d9a0bb76290ede8925642ab4
+E
+OrdersService/pom.xml,5/a/5af9e81594186ceba2134f10c5724d805fcaff97
