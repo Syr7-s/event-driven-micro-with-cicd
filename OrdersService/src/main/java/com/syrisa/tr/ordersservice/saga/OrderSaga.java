@@ -50,6 +50,8 @@ public class OrderSaga {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(OrderSaga.class);
 
+    private String scheduleId;
+
 
     @StartSaga // This annotation is used to start the saga.
     @SagaEventHandler(associationProperty = "orderId")
@@ -104,7 +106,7 @@ public class OrderSaga {
         }
         LOGGER.info("UserPaymentDetails fetched for userId: " + userPaymentDetails.getUserId());
 
-        deadlineManager.schedule(Duration.of(10, ChronoUnit.SECONDS),
+        scheduleId = deadlineManager.schedule(Duration.of(10, ChronoUnit.SECONDS),
                 PAYMENT_PROCESSING_DEADLINE, productReservedEvent);
 
         if (true) {
@@ -140,6 +142,8 @@ public class OrderSaga {
         LOGGER.info("Sending a CancelProductReservationCommand to compensate the transaction for productId: " +
                 productReservedEvent.getProductId() + " and orderId: " + productReservedEvent.getOrderId());
         // Send a CancelProductReservationCommand to the CommandGateway
+        cancelDeadline();
+
         CancelProductReservationCommand cancelProductReservationCommand = CancelProductReservationCommand.builder()
                 .orderId(productReservedEvent.getOrderId())
                 .productId(productReservedEvent.getProductId())
@@ -153,12 +157,20 @@ public class OrderSaga {
 
     @SagaEventHandler(associationProperty = "orderId")
     public void handle(PaymentProcessedEvent paymentProcessedEvent) {
-        deadlineManager.cancelAll(PAYMENT_PROCESSING_DEADLINE);
+        cancelDeadline();
 
         LOGGER.info("PaymentProcessedEvent is called for orderId: " + paymentProcessedEvent.getOrderId());
         // Send a ApproveOrderCommand to the CommandGateway
         ApproveOrderCommand approveOrderCommand = new ApproveOrderCommand(paymentProcessedEvent.getOrderId());
         commandGateway.send(approveOrderCommand);
+    }
+
+    private void cancelDeadline() {
+        if (scheduleId != null) {
+            deadlineManager.cancelSchedule(PAYMENT_PROCESSING_DEADLINE, scheduleId);
+            scheduleId = null;
+        }
+        // deadlineManager.cancelAll(PAYMENT_PROCESSING_DEADLINE);
     }
 
     @EndSaga
@@ -184,8 +196,9 @@ public class OrderSaga {
     public void handle(OrderRejectedEvent orderRejectedEvent) {
         LOGGER.info("Successfully rejected order with id  " + orderRejectedEvent.getOrderId());
     }
+
     @DeadlineHandler(deadlineName = PAYMENT_PROCESSING_DEADLINE)
-    public void handlePaymentDeadline(ProductReservedEvent productReservedEvent){
+    public void handlePaymentDeadline(ProductReservedEvent productReservedEvent) {
         LOGGER.info("Payment Processing Deadline took place. Sending a compensating command to cancel the product reservation for productId: " +
                 productReservedEvent.getProductId() + " and orderId: " + productReservedEvent.getOrderId());
         cancelProductReservation(productReservedEvent, "Payment timeout occurred. Cancelling the product reservation...");
