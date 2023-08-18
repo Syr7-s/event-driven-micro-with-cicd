@@ -53,11 +53,18 @@
             <scope>test</scope>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.axonframework/axon-spring-boot-starter -->
-        <dependency>
+      <dependency>
             <groupId>org.axonframework</groupId>
             <artifactId>axon-spring-boot-starter</artifactId>
             <version>4.8.0</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.axonframework/axon-spring-boot-starter -->
+        <!--
+        <dependency>
+            <groupId>org.axonframework</groupId>
+            <artifactId>axon-spring-boot-starter</artifactId>
+            <version>4.4.7</version>
+        </dependency>-->
         <!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
         <dependency>
             <groupId>com.google.guava</groupId>

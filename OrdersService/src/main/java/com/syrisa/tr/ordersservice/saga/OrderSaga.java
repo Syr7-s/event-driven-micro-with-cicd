@@ -14,6 +14,7 @@ import com.syrisa.tr.ordersservice.core.events.OrderApprovedEvent;
 import com.syrisa.tr.ordersservice.core.events.OrderCreatedEvent;
 import com.syrisa.tr.ordersservice.core.events.OrderRejectedEvent;
 import org.axonframework.commandhandling.gateway.CommandGateway;
+import org.axonframework.deadline.DeadlineManager;
 import org.axonframework.messaging.responsetypes.ResponseTypes;
 import org.axonframework.modelling.saga.EndSaga;
 import org.axonframework.modelling.saga.SagaEventHandler;
@@ -24,6 +25,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -35,6 +38,9 @@ public class OrderSaga {
     private transient CommandGateway commandGateway;
     @Autowired
     private transient QueryGateway queryGateway;
+
+    @Autowired
+    private transient DeadlineManager deadlineManager;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(OrderSaga.class);
 
@@ -96,6 +102,13 @@ public class OrderSaga {
         }
         LOGGER.info("UserPaymentDetails fetched for userId: " + userPaymentDetails.getUserId());
 
+        deadlineManager.schedule(Duration.of(10, ChronoUnit.SECONDS),
+                "paymentProcessingDeadline", productReservedEvent);
+
+        if (true){
+            return;
+        }
+
         ProcessPaymentCommand processPaymentCommand = ProcessPaymentCommand.builder()
                 .orderId(productReservedEvent.getOrderId())
                 .paymentId(UUID.randomUUID().toString())
@@ -138,6 +151,8 @@ public class OrderSaga {
 
     @SagaEventHandler(associationProperty = "orderId")
     public void handle(PaymentProcessedEvent paymentProcessedEvent) {
+        deadlineManager.cancelAll("paymentProcessingDeadline");
+
         LOGGER.info("PaymentProcessedEvent is called for orderId: " + paymentProcessedEvent.getOrderId());
         // Send a ApproveOrderCommand to the CommandGateway
         ApproveOrderCommand approveOrderCommand = new ApproveOrderCommand(paymentProcessedEvent.getOrderId());
