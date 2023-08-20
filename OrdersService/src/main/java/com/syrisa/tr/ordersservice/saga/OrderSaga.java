@@ -13,6 +13,10 @@ import com.syrisa.tr.ordersservice.command.commands.RejectOrderCommand;
 import com.syrisa.tr.ordersservice.core.events.OrderApprovedEvent;
 import com.syrisa.tr.ordersservice.core.events.OrderCreatedEvent;
 import com.syrisa.tr.ordersservice.core.events.OrderRejectedEvent;
+import com.thoughtworks.xstream.XStream;
+import org.axonframework.commandhandling.CommandCallback;
+import org.axonframework.commandhandling.CommandMessage;
+import org.axonframework.commandhandling.CommandResultMessage;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.axonframework.deadline.DeadlineManager;
 import org.axonframework.deadline.annotation.DeadlineHandler;
@@ -52,6 +56,9 @@ public class OrderSaga {
     @SagaEventHandler(associationProperty = "orderId")
     // This annotation is used to define the event that will be handled by the saga.
     public void handle(OrderCreatedEvent orderCreatedEvent) {
+        XStream xStream = new XStream();
+        xStream.allowTypes(new Class[]{ReserveProductCommand.class});
+
         LOGGER.info("We are creating a saga for the order with id: " + orderCreatedEvent.getOrderId());
         ReserveProductCommand reserveProductCommand = ReserveProductCommand.builder()
                 .orderId(orderCreatedEvent.getOrderId())
@@ -60,7 +67,7 @@ public class OrderSaga {
                 .userId(orderCreatedEvent.getUserId())
                 .build();
         LOGGER.info("In OrderSaga OrderCreatedEvent handled for orderId: " + reserveProductCommand.getOrderId() + " and productId: " + reserveProductCommand.getProductId());
-        commandGateway.send(reserveProductCommand, (commandMessage, commandResultMessage) -> {
+      /*  commandGateway.send(reserveProductCommand, (commandMessage, commandResultMessage) -> {
             if (commandResultMessage.isExceptional()) {
                 // Start a compensating transaction
                 LOGGER.info("ReserveProductCommand is failed for orderId: " + reserveProductCommand.getOrderId() +
@@ -71,10 +78,27 @@ public class OrderSaga {
                         " and productId: " + reserveProductCommand.getProductId());
             }
         });
-
         commandGateway.send(reserveProductCommand);
         LOGGER.info("ReserveProductCommand is successful for orderId: " + reserveProductCommand.getOrderId() +
-                " and productId: " + reserveProductCommand.getProductId());
+                " and productId: " + reserveProductCommand.getProductId());*/
+
+        commandGateway.send(reserveProductCommand, new CommandCallback<ReserveProductCommand, Object>() {
+
+            @Override
+            public void onResult(CommandMessage<? extends ReserveProductCommand> commandMessage,
+                                 CommandResultMessage<? extends Object> commandResultMessage) {
+                if(commandResultMessage.isExceptional()) {
+                    // Start a compensating transaction
+                    RejectOrderCommand rejectOrderCommand = new RejectOrderCommand(orderCreatedEvent.getOrderId(),
+                            commandResultMessage.exceptionResult().getMessage());
+
+                    commandGateway.send(rejectOrderCommand);
+                }
+
+            }
+
+        });
+
     }
 
     @SagaEventHandler(associationProperty = "orderId")

@@ -1,0 +1,10 @@
+
+P	java:S125"<This block of commented-out lines of code should be removed.(ëûÂ>
+g
+java:S1128"RRemove this unused import 'com.syrisa.tr.ordersservice.query.rest.OrderRestModel'.(Ä®Às
+V
+java:S1128	"@Remove this unused import 'org.springframework.beans.BeanUtils'.(ŠğÄÜ
+F
+java:S1128"+Remove this unused import 'java.util.List'.(Õë±Äøÿÿÿÿ
+S
+java:S1128"8Remove this unused import 'java.util.stream.Collectors'.(Óóº´úÿÿÿÿ

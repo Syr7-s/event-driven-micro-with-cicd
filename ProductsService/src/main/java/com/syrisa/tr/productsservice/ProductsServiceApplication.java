@@ -1,7 +1,9 @@
 package com.syrisa.tr.productsservice;
 
+import com.syrisa.tr.core.commands.ReserveProductCommand;
 import com.syrisa.tr.productsservice.command.interceptor.CreateProductCommandInterceptor;
 import com.syrisa.tr.productsservice.core.errorhandling.ProductsServiceEventsHandler;
+import com.thoughtworks.xstream.XStream;
 import org.axonframework.commandhandling.CommandBus;
 import org.axonframework.config.EventProcessingConfigurer;
 import org.axonframework.eventhandling.PropagatingErrorHandler;
@@ -18,6 +20,7 @@ public class ProductsServiceApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(ProductsServiceApplication.class, args);
+
     }
     @Autowired
     public void registerCreateProductCommandInterceptor(ApplicationContext context, CommandBus commandBus){

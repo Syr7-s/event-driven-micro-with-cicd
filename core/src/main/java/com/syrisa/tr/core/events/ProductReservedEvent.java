@@ -1,11 +1,11 @@
 package com.syrisa.tr.core.events;
 
 import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
-@Setter
+@Data
 @Builder
 public class ProductReservedEvent {
     private final String productId;

@@ -2,10 +2,11 @@ package com.syrisa.tr.core.commands;
 
 import com.syrisa.tr.core.model.PaymentDetails;
 import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 import org.axonframework.modelling.command.TargetAggregateIdentifier;
 
-@Getter
+@Data
 @Builder
 public class ProcessPaymentCommand {
     @TargetAggregateIdentifier
