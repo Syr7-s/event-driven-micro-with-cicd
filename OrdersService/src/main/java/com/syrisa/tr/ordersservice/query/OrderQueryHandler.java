@@ -3,14 +3,10 @@ package com.syrisa.tr.ordersservice.query;
 import com.syrisa.tr.ordersservice.core.entity.OrderEntity;
 import com.syrisa.tr.ordersservice.core.entity.OrdersRepository;
 import com.syrisa.tr.ordersservice.core.model.OrderSummary;
-import com.syrisa.tr.ordersservice.query.rest.OrderRestModel;
 import lombok.RequiredArgsConstructor;
 import org.axonframework.queryhandling.QueryHandler;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor

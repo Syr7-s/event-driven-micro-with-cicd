@@ -31,7 +31,7 @@ public class OrdersCommandController {
 
 
     @PostMapping
-    public OrderSummary createOrder(@Valid @RequestBody CreateOrderRestModel createOrderRestModel){
+    public OrderSummary createOrder(@Valid @RequestBody CreateOrderRestModel createOrderRestModel) {
         String returnValue = "";
         CreateOrderCommand createOrderCommand = CreateOrderCommand.builder()
                 .orderId(UUID.randomUUID().toString())
@@ -42,7 +42,7 @@ public class OrdersCommandController {
                 .orderStatus(OrderStatus.CREATED)
                 .build();
 
-        SubscriptionQueryResult<OrderSummary,OrderSummary> queryResult = queryGateway.subscriptionQuery(
+        SubscriptionQueryResult<OrderSummary, OrderSummary> queryResult = queryGateway.subscriptionQuery(
                 new FindOrdersQuery(createOrderCommand.getOrderId()),
                 ResponseTypes.instanceOf(OrderSummary.class),
                 ResponseTypes.instanceOf(OrderSummary.class)
@@ -52,9 +52,9 @@ public class OrdersCommandController {
             commandGateway.sendAndWait(createOrderCommand);
             LOGGER.info("OrderCommandController-createOrder() -> CreateOrderCommand is sent.");
             OrderSummary orderSummary = queryResult.updates().blockFirst();
-            LOGGER.info("OrderSummary is returned. %s",orderSummary.toString());
-            return  orderSummary;
-        }finally {
+            LOGGER.info("OrderSummary is returned. %s", orderSummary.toString());
+            return orderSummary;
+        } finally {
             queryResult.close();
         }
     }

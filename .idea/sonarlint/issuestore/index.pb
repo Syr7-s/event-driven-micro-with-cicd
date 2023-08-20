@@ -15,8 +15,6 @@ G
 PaymentsService/pom.xml,7/a/7ac12e40043218c7cc6338c425422d2ed59cbdf1
 ç
 ]OrdersService/src/main/java/com/syrisa/tr/ordersservice/command/OrderLookupEventsHandler.java,2/3/2397ce868a54e313a09df8410b47072fc666ff60
-é
-^OrdersService/src/main/java/com/syrisa/tr/ordersservice/command/rest/CreateOrderRestModel.java,a/1/a12b225b1ca793ff7d1f4945695953b0355b7a75
 ç
 ]PaymentsService/src/main/java/com/syrisa/tr/paymentsservice/core/data/PaymentsRepository.java,e/6/e62971de7e754dc9646f9560efbc5109d73a2ac8
 â
@@ -65,12 +63,8 @@ YProductsService/src/main/java/com/syrisa/tr/productsservice/command/ProductAggr
 dProductsService/src/main/java/com/syrisa/tr/productsservice/command/rest/CreateProductRestModel.java,f/4/f4c6eb2b453592d6e3ba0075a179abc829f0003f
 ó
 gProductsService/src/main/java/com/syrisa/tr/productsservice/command/rest/ProductsCommandController.java,4/3/436f9e89b3b35d3fbf079573fcfbaa068d1b8c6d
-ë
-aOrdersService/src/main/java/com/syrisa/tr/ordersservice/command/rest/OrdersCommandController.java,0/c/0c4c81030f2bf9e15f522c286d153bec9b2fd0de
 Ö
 UOrdersService/src/main/java/com/syrisa/tr/ordersservice/query/OrderEventsHandler.java,d/2/d2d769cfa006d4b0798bcd398d60de70a521e02a
-Ñ
-TOrdersService/src/main/java/com/syrisa/tr/ordersservice/query/OrderQueryHandler.java,4/d/4d06c63fc5a43c33e24f23637bb879c03843124b
 Ñ
 TOrdersService/src/main/java/com/syrisa/tr/ordersservice/core/entity/OrderEntity.java,9/2/92c121658a5b64e81e03cdf219d9212cefda0704
 o

@@ -13,6 +13,8 @@ import com.syrisa.tr.ordersservice.command.commands.RejectOrderCommand;
 import com.syrisa.tr.ordersservice.core.events.OrderApprovedEvent;
 import com.syrisa.tr.ordersservice.core.events.OrderCreatedEvent;
 import com.syrisa.tr.ordersservice.core.events.OrderRejectedEvent;
+import com.syrisa.tr.ordersservice.core.model.OrderSummary;
+import com.syrisa.tr.ordersservice.query.FindOrdersQuery;
 import com.thoughtworks.xstream.XStream;
 import org.axonframework.commandhandling.CommandCallback;
 import org.axonframework.commandhandling.CommandMessage;
@@ -25,6 +27,7 @@ import org.axonframework.modelling.saga.EndSaga;
 import org.axonframework.modelling.saga.SagaEventHandler;
 import org.axonframework.modelling.saga.StartSaga;
 import org.axonframework.queryhandling.QueryGateway;
+import org.axonframework.queryhandling.QueryUpdateEmitter;
 import org.axonframework.spring.stereotype.Saga;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,6 +47,9 @@ public class OrderSaga {
     private transient QueryGateway queryGateway;
     @Autowired
     private transient DeadlineManager deadlineManager;
+
+    @Autowired
+    private transient QueryUpdateEmitter queryUpdateEmitter;
 
     private static final String PAYMENT_PROCESSING_DEADLINE = "paymentProcessingDeadline";
 
@@ -196,6 +202,12 @@ public class OrderSaga {
         //  ApproveOrderCommand approveOrderCommand = new ApproveOrderCommand(orderApprovedEvent.getOrderId());
         //  commandGateway.send(approveOrderCommand);
         // SagaLifecycle.end();
+
+        queryUpdateEmitter.emit(FindOrdersQuery.class,
+                query -> true,
+                new OrderSummary(orderApprovedEvent.getOrderId(),
+                        orderApprovedEvent.getOrderStatus(),
+                        ""));
     }
 
     @SagaEventHandler(associationProperty = "orderId")
@@ -210,6 +222,11 @@ public class OrderSaga {
     @SagaEventHandler(associationProperty = "orderId")
     public void handle(OrderRejectedEvent orderRejectedEvent) {
         LOGGER.info("Successfully rejected order with id  " + orderRejectedEvent.getOrderId());
+        queryUpdateEmitter.emit(FindOrdersQuery.class,
+                query -> true,
+                new OrderSummary(orderRejectedEvent.getOrderId(),
+                        orderRejectedEvent.getOrderStatus(),
+                        orderRejectedEvent.getReason()));
     }
 
     @DeadlineHandler(deadlineName = PAYMENT_PROCESSING_DEADLINE)
