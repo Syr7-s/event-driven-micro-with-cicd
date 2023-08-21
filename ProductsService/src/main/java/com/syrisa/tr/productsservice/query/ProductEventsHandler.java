@@ -8,6 +8,7 @@ import com.syrisa.tr.productsservice.core.events.ProductCreatedEvent;
 import lombok.RequiredArgsConstructor;
 import org.axonframework.config.ProcessingGroup;
 import org.axonframework.eventhandling.EventHandler;
+import org.axonframework.eventhandling.ResetHandler;
 import org.axonframework.messaging.interceptors.ExceptionHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -68,5 +69,9 @@ public class ProductEventsHandler {
     	productEntity.setQuantity(productEntity.getQuantity() + productReservationCancelledEvent.getQuantity());
     	productsRepository.save(productEntity);
         LOGGER.debug("ProductReservedEven: Current Product quantity  "+productReservationCancelledEvent.getQuantity());
+    }
+    @ResetHandler
+    public void reset(){
+        productsRepository.deleteAll();
     }
 }

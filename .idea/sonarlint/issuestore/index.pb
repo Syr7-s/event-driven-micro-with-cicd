@@ -51,8 +51,6 @@ E
 ApiGateway/Dockerfile,1/4/146ce03ec3809afd0bdad7933ede21ac5f1f2c01
 É
 SOrdersService/src/main/java/com/syrisa/tr/ordersservice/command/OrderAggregate.java,6/0/60e7d01c5c3345244de4dba876deadd05a6fd47b
-ã
-[ProductsService/src/main/java/com/syrisa/tr/productsservice/query/ProductEventsHandler.java,0/2/0269f1f77dbd2e8516dc9d40092d42ae19213c8a
 ç
 ]ProductsService/src/main/java/com/syrisa/tr/productsservice/command/CreateProductCommand.java,6/e/6e4151616424ff502bf523e492e8a73997775b37
 ê

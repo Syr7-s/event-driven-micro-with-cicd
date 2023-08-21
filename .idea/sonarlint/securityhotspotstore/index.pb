@@ -53,8 +53,6 @@ XProductsService/src/main/java/com/syrisa/tr/productsservice/core/data/ProductEn
 SOrdersService/src/main/java/com/syrisa/tr/ordersservice/command/OrderAggregate.java,6/0/60e7d01c5c3345244de4dba876deadd05a6fd47b
 ê
 `ProductsService/src/main/java/com/syrisa/tr/productsservice/core/events/ProductCreatedEvent.java,e/b/eba09d4c3f709d7b60ce6ae954f9ec6328cf62e4
-ã
-[ProductsService/src/main/java/com/syrisa/tr/productsservice/query/ProductEventsHandler.java,0/2/0269f1f77dbd2e8516dc9d40092d42ae19213c8a
 ç
 ]ProductsService/src/main/java/com/syrisa/tr/productsservice/command/CreateProductCommand.java,6/e/6e4151616424ff502bf523e492e8a73997775b37
 î
