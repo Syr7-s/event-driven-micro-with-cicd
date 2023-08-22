@@ -3,9 +3,14 @@ package com.syrisa.tr.core.commands;
 import lombok.Builder;
 import lombok.Data;
 import org.axonframework.modelling.command.TargetAggregateIdentifier;
+
+import java.io.Serializable;
+
 @Data
 @Builder
-public class CancelProductReservationCommand {
+public class CancelProductReservationCommand implements Serializable {
+    private static final long serialVersionUID = 2L;
+
     @TargetAggregateIdentifier
     private final String productId;
 
