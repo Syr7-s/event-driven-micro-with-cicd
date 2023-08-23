@@ -4,10 +4,12 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serializable;
+
 @Getter
 @Setter
 @Builder
-public class PaymentDetails {
+public class PaymentDetails implements Serializable {
     private final String name;
     private final String cardNumber;
     private final int validUntilMonth;

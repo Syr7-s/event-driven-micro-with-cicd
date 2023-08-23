@@ -1,0 +1,16 @@
+
+J
+java:S1604Y"(Make this anonymous inner class a lambda(øş¸¶şÿÿÿÿ8ôùí ¡1
+M
+java:S2065-"0Remove the "transient" modifier from this field.(ºÿÂ«8–úí ¡1
+R
+java:S2065/"0Remove the "transient" modifier from this field.(ËÀÖ­ÿÿÿÿÿ8—úí ¡1
+R
+java:S20651"0Remove the "transient" modifier from this field.(£ÕùÇûÿÿÿÿ8—úí ¡1
+M
+java:S20654"0Remove the "transient" modifier from this field.(¤Û’Ş8—úí ¡1
+X	java:S125J"<This block of commented-out lines of code should be removed.(ªĞÚ™8¤úí ¡1
+Y	java:S125À"<This block of commented-out lines of code should be removed.(‘²¡ü8²úí ¡1
+^	java:S125È"<This block of commented-out lines of code should be removed.(èŸ˜¶úÿÿÿÿ8³úí ¡1
+Z
+java:S1128"=Remove this unused import 'com.thoughtworks.xstream.XStream'.(¨Î•Õ8ÇÔäè¡1

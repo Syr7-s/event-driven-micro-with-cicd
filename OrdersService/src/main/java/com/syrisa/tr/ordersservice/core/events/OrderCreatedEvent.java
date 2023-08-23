@@ -1,13 +1,11 @@
 package com.syrisa.tr.ordersservice.core.events;
 
 import com.syrisa.tr.ordersservice.core.model.OrderStatus;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
-@Getter
-@Setter
-@ToString
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class OrderCreatedEvent {
     private String orderId;
     private String userId;

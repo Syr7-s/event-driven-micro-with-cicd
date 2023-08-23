@@ -62,8 +62,6 @@ public class OrderSaga {
     @SagaEventHandler(associationProperty = "orderId")
     // This annotation is used to define the event that will be handled by the saga.
     public void handle(OrderCreatedEvent orderCreatedEvent) {
-        XStream xStream = new XStream();
-        xStream.allowTypes(new Class[]{ReserveProductCommand.class});
 
         LOGGER.info("We are creating a saga for the order with id: " + orderCreatedEvent.getOrderId());
         ReserveProductCommand reserveProductCommand = ReserveProductCommand.builder()
