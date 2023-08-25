@@ -4,6 +4,7 @@ import com.syrisa.tr.core.commands.ReserveProductCommand;
 import com.syrisa.tr.productsservice.command.interceptor.CreateProductCommandInterceptor;
 import com.syrisa.tr.productsservice.core.errorhandling.ProductsServiceEventsHandler;
 import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.security.AnyTypePermission;
 import org.axonframework.commandhandling.CommandBus;
 import org.axonframework.config.EventProcessingConfigurer;
 import org.axonframework.eventhandling.PropagatingErrorHandler;
@@ -16,10 +17,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
 
 @SpringBootApplication
 //@EnableJpaRepositories
 @EnableDiscoveryClient // This annotation is used to register the service in the Eureka server.
+@Import({ com.syrisa.tr.productsservice.configuration.AxonXStreamConfig.class })
 public class ProductsServiceApplication {
 
     public static void main(String[] args) {
@@ -41,4 +44,5 @@ public class ProductsServiceApplication {
     public SnapshotTriggerDefinition productSnapshotTriggerDefinition(Snapshotter snapshotter){
         return new EventCountSnapshotTriggerDefinition(snapshotter,3);
     }
+
 }
