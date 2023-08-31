@@ -3,14 +3,12 @@ package com.syrisa.tr.core.query;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Data;
 import org.axonframework.modelling.command.TargetAggregateIdentifier;
 
-@Getter
-@Setter
-@NoArgsConstructor
+@Data
 @AllArgsConstructor
 public class FetchUserPaymentDetailsQuery {
-    @TargetAggregateIdentifier
+    //@TargetAggregateIdentifier
     private String userId;
 }

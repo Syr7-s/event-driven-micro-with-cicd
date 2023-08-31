@@ -10,6 +10,8 @@ import org.axonframework.eventsourcing.EventSourcingHandler;
 import org.axonframework.modelling.command.AggregateIdentifier;
 import org.axonframework.modelling.command.AggregateLifecycle;
 import org.axonframework.spring.stereotype.Aggregate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 
 import java.math.BigDecimal;
@@ -22,6 +24,10 @@ public class ProductAggregate {
     private  String title;
     private  Integer quantity;
     private  BigDecimal price;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProductAggregate.class);
+
+
 
     public ProductAggregate() {
     }
@@ -45,6 +51,7 @@ public class ProductAggregate {
     @CommandHandler
     public void handle(ReserveProductCommand reserveProductCommand){
         // Validate Reserve Product Command
+        LOGGER.info("ReserveProductCommand is called for productId: " + reserveProductCommand.getProductId() + " and orderId: " + reserveProductCommand.getOrderId());
         if (reserveProductCommand.getQuantity()<=0){
             throw new IllegalArgumentException("Quantity cannot be less than or equal to zero");
         }
@@ -62,6 +69,8 @@ public class ProductAggregate {
                 .build();
 
         AggregateLifecycle.apply(productReservedEvent);
+        LOGGER.info("ProductReservedEvent is published for productId: " + reserveProductCommand.getProductId() + " and orderId: " + reserveProductCommand.getOrderId());
+
     }
 
 

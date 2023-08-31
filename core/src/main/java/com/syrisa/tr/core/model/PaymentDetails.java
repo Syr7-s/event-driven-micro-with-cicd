@@ -1,13 +1,12 @@
 package com.syrisa.tr.core.model;
 
 import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
 import lombok.Setter;
 
 import java.io.Serializable;
 
-@Getter
-@Setter
+@Data
 @Builder
 public class PaymentDetails implements Serializable {
     private final String name;

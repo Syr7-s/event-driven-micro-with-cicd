@@ -8,6 +8,8 @@ import org.axonframework.eventsourcing.EventSourcingHandler;
 import org.axonframework.modelling.command.AggregateIdentifier;
 import org.axonframework.modelling.command.AggregateLifecycle;
 import org.axonframework.spring.stereotype.Aggregate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 @Aggregate
@@ -15,7 +17,10 @@ import org.axonframework.spring.stereotype.Aggregate;
 public class PaymentAggregate {
     @AggregateIdentifier
     private String paymentId;
+
     private String orderId;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(PaymentAggregate.class);
 
 
     @CommandHandler
@@ -32,13 +37,18 @@ public class PaymentAggregate {
         if (processPaymentCommand.getPaymentId() == null || processPaymentCommand.getPaymentId().isBlank()) {
             throw new IllegalArgumentException("Payment id must not be null or blank");
         }
+        LOGGER.info("ProcessPaymentCommand is called for orderId: " + processPaymentCommand.getOrderId() + " and paymentId: " + processPaymentCommand.getPaymentId());
+        PaymentProcessedEvent paymentProcessedEvent = PaymentProcessedEvent.builder()
+                        .paymentId(processPaymentCommand.getPaymentId())
+                        .orderId(processPaymentCommand.getOrderId())
+                        .build();
 
-        AggregateLifecycle.apply(new PaymentProcessedEvent(processPaymentCommand.getOrderId(), processPaymentCommand.getPaymentId()));
+        AggregateLifecycle.apply(paymentProcessedEvent);
     }
 
     @EventSourcingHandler
-    public void handle(ProcessPaymentCommand processPaymentCommand) {
-        this.orderId = processPaymentCommand.getOrderId();
-        this.paymentId = processPaymentCommand.getPaymentId();
+    public void handle(PaymentProcessedEvent paymentProcessedEvent) {
+        this.paymentId = paymentProcessedEvent.getPaymentId();
+        this.orderId = paymentProcessedEvent.getOrderId();
     }
 }

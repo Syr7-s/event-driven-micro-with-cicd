@@ -15,7 +15,6 @@ import com.syrisa.tr.ordersservice.core.events.OrderCreatedEvent;
 import com.syrisa.tr.ordersservice.core.events.OrderRejectedEvent;
 import com.syrisa.tr.ordersservice.core.model.OrderSummary;
 import com.syrisa.tr.ordersservice.query.FindOrdersQuery;
-import com.thoughtworks.xstream.XStream;
 import org.axonframework.commandhandling.CommandCallback;
 import org.axonframework.commandhandling.CommandMessage;
 import org.axonframework.commandhandling.CommandResultMessage;
@@ -91,7 +90,7 @@ public class OrderSaga {
             @Override
             public void onResult(CommandMessage<? extends ReserveProductCommand> commandMessage,
                                  CommandResultMessage<? extends Object> commandResultMessage) {
-                if(commandResultMessage.isExceptional()) {
+                if (commandResultMessage.isExceptional()) {
                     // Start a compensating transaction
                     RejectOrderCommand rejectOrderCommand = new RejectOrderCommand(orderCreatedEvent.getOrderId(),
                             commandResultMessage.exceptionResult().getMessage());
@@ -137,12 +136,15 @@ public class OrderSaga {
                 .paymentId(UUID.randomUUID().toString())
                 .paymentDetails(userPaymentDetails.getPaymentDetails())
                 .build();
+        LOGGER.info("Sending a ProcessPaymentCommand to the CommandGateway for orderId: " + processPaymentCommand.getOrderId() + " and paymentId: " + processPaymentCommand.getPaymentId() + " and paymentDetails: " + processPaymentCommand.getPaymentDetails());
         String result = null;
+
         try {
-            result = commandGateway.sendAndWait(processPaymentCommand, 10, TimeUnit.SECONDS);
+            result = commandGateway.sendAndWait(processPaymentCommand, 50, TimeUnit.SECONDS);
         } catch (Exception e) {
             // Start a compensating transaction
             LOGGER.error(e.getMessage());
+
             cancelProductReservation(productReservedEvent, e.getMessage());
             return;
 

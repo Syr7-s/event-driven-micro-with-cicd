@@ -5,11 +5,11 @@ import com.syrisa.tr.paymentsservice.core.data.PaymentEntity;
 import com.syrisa.tr.paymentsservice.core.data.PaymentsRepository;
 import lombok.RequiredArgsConstructor;
 import org.axonframework.config.ProcessingGroup;
+import org.axonframework.eventhandling.EventHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @Component
 @ProcessingGroup("payment-group")
@@ -20,16 +20,16 @@ public class PaymentEventsHandler {
     private static final Logger LOGGER = LoggerFactory.getLogger(PaymentEventsHandler.class);
 
 
-    @ExceptionHandler
+    @EventHandler
     public void on(PaymentProcessedEvent event) {
         PaymentEntity paymentEntity = new PaymentEntity();
         BeanUtils.copyProperties(event, paymentEntity);
         try {
+            LOGGER.info("PaymentProcessedEvent is called for orderId : from EventsHandler " + event.getOrderId());
             paymentsRepository.save(paymentEntity);
-            LOGGER.info("PaymentProcessedEvent is called for orderId: from EventsHandler " + event.getOrderId());
-
         } catch (IllegalArgumentException ex) {
-            ex.printStackTrace();
+            LOGGER.error("PaymentProcessedEvent is called for orderId: from EventsHandler " + event.getOrderId()+ " and paymentId: " + event.getPaymentId());
+            LOGGER.error(ex.getMessage());
         }
     }
 }

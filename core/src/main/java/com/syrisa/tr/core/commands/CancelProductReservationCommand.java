@@ -8,8 +8,7 @@ import java.io.Serializable;
 
 @Data
 @Builder
-public class CancelProductReservationCommand implements Serializable {
-    private static final long serialVersionUID = 2L;
+public class CancelProductReservationCommand  {
 
     @TargetAggregateIdentifier
     private final String productId;
