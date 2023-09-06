@@ -135,3 +135,5 @@ aPaymentsService/src/main/java/com/syrisa/tr/paymentsservice/core/events/Payment
 SOrdersService/src/main/java/com/syrisa/tr/ordersservice/command/OrderAggregate.java,6/0/60e7d01c5c3345244de4dba876deadd05a6fd47b
 ê
 `OrdersService/src/main/java/com/syrisa/tr/ordersservice/command/commands/CreateOrderCommand.java,5/3/531c6dbeb45f103f366b9e40fabad32ad23f7485
+A
+UserService/nexus,3/8/38347e9563f89af0cb4da840b348f3fa93871249

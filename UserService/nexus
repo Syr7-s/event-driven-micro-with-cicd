@@ -1,0 +1,2 @@
+curl -v -u myuser:mypassword --upload-file myapp-1.0.0.jar https://nexus.example.com/repository/maven-releases/com/example/myapp/1.0.0/myapp-1.0.0.jar
+

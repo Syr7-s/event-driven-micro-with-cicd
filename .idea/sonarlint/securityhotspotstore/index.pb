@@ -135,3 +135,5 @@ UOrdersService/src/main/java/com/syrisa/tr/ordersservice/query/OrderEventsHandle
 ^OrdersService/src/main/java/com/syrisa/tr/ordersservice/command/rest/CreateOrderRestModel.java,a/1/a12b225b1ca793ff7d1f4945695953b0355b7a75
 ƒ
 SOrdersService/src/main/java/com/syrisa/tr/ordersservice/command/OrderAggregate.java,6/0/60e7d01c5c3345244de4dba876deadd05a6fd47b
+A
+UserService/nexus,3/8/38347e9563f89af0cb4da840b348f3fa93871249
