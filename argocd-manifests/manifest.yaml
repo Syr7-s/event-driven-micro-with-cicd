@@ -1,0 +1,16 @@
+project: ${projectName}
+source:
+  repoURL: 'https://fibagithub.fibabanka.com.tr/fibagit/${applicationName}'
+  path: ${env}/.
+  targetRevision: HEAD
+destination:
+  namespace: ${namespace}
+  name: ${clusterName}
+syncPolicy:
+  syncOptions:
+    - RespectIgnoreDifferences=true
+ignoreDifferences:
+  - group: apps
+    kind: Deployment
+    jsonPointers:
+      - /spec/replicas

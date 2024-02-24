@@ -1,0 +1,35 @@
+{
+  "metadata": {
+    "name": "${metaDataName}"
+  },
+  "spec": {
+    "destination": {
+      "name": "${clusterName}",
+      "namespace": "${namespace}"
+    },
+    "name": "specname1",
+    "project": "${projectName}",
+    "source": {
+      "repoURL": "https://fibagithub.fibabanka.com.tr/fibagit/${applicationName}",
+      "path": "${env}/.",
+      "targetRevision": "HEAD",
+      "directory": {
+        "recurse": "true"
+      }
+    },
+    "syncPolicy": {
+      "syncOptions": [
+        "RespectIgnoreDifferences=true"
+      ]
+    },
+    "ignoreDifferences": [
+      {
+        "group": "apps",
+        "kind": "Deployment",
+        "jsonPointers": [
+          "/spec/replicas"
+        ]
+      }
+    ]
+  }
+}

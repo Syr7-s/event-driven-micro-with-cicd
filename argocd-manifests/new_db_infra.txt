@@ -1,0 +1,59 @@
+DB : 
+
+* DevOpsValidations
+    * ReleaseID
+    * RepositoryName
+    * ValidationStatus
+    * DeployReason
+    * StartDate
+    * EndDate
+    * Duration
+    * IsAutoCompDeployReason
+    * IsAutoCompValidation
+* ReleseStatus
+    * ReleaseID
+    * RepositoryName
+    * JiraIssue
+    * DeployStatus
+    * DeployTime
+    * CommitterID
+    * UpdateTime
+* ReleaseDeployDuration
+    * ReleaseID
+    * PackageName
+    * CommitterID
+    * AppTechnology
+    * TestDeployDuration
+    * TestDeployTime
+    * UatDeployDuration
+    * UatDeployTime
+    * PreliveDeployDuration
+    * PreliveDeployTime
+    * ProdDeployDuration
+    * ProdDeployTime
+    * ReleaseStartDate
+    * DeveloperTeamName
+    * CoreVersionComprasionUrl
+    * ReleaseType
+    * DirectorMail
+    * DepartmentMail
+    * JiraIssue
+    * AgileSquad
+* PlannedReleaseDayFreezeInfo
+    * ReleaseID
+    * RepositoryName
+    * CommitterID
+    * DeployReason
+    * DirectorMail
+    * JiraIssueß
+    * NotificationMail
+    * ReadyForDeploy
+    * ReleaseStartDate
+    * ReleaseCurrentDate
+    * ProdDeployTime
+    * TeamName
+    * PackageTimeState
+
+
+* Fibarelease de task'lar da release'in hangi adımda olduğunu görmek için kullanılabilir.
+* Ortam bazlı deploy durumu takip edilebilir.
